@@ -1560,6 +1560,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
       displayDate = `${String(d.getDate()).padStart(2, '0')}-${months[d.getMonth()]}`;
     }
 
+    const targetAssignedTo = salesFormData.assignedTo || 'Jawahir';
+
     const newComplaint = {
       complaintNo: finalNo,
       complaintDate: displayDate,
@@ -1570,8 +1572,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
       severity: salesFormData.severity,
       description: salesFormData.description,
       raisedBy: user?.name || 'Sales Person',
-      status: 'Open',
-      assignedTo,
+      status: customStatus,
+      assignedTo: targetAssignedTo,
       slaTarget: '4 Days',
       slaStatus: 'Within SLA',
       ageing: '0',
@@ -1596,7 +1598,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         body: JSON.stringify(newComplaint)
       });
       if (!res.ok) throw new Error('Failed to submit complaint');
-      alert(`Complaint ${complaintNo} successfully raised and assigned to ${assignedTo}!`);
+      alert(`Complaint ${finalNo} successfully raised and assigned to ${targetAssignedTo}!`);
       setSalesFormData({
         customerName: '',
         invoiceNo: '',
