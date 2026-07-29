@@ -187,7 +187,7 @@ function ProfitLossChart() {
       {[0, 25, 50, 75, 100].map(v => (
         <g key={v}>
           <line x1={pL} y1={toY(v)} x2={W - pR} y2={toY(v)} stroke="#f3f4f6" strokeWidth="1"/>
-          <text x={pL - 8} y={toY(v) + 3} fill="#9ca3af" fontSize="9" textAnchor="end" fontFamily="Goga">{v > 0 ? `${v}k` : '0'}</text>
+          <text x={pL - 8} y={toY(v) + 3} fill="#9ca3af" fontSize="9" textAnchor="end" fontFamily="Montserrat">{v > 0 ? `${v}k` : '0'}</text>
         </g>
       ))}
       {/* Profit bars */}
@@ -202,7 +202,7 @@ function ProfitLossChart() {
       ))}
       {/* X Labels */}
       {months.map((m, i) => (
-        <text key={i} x={toX(i)} y={H - 8} fill="#9ca3af" fontSize="9" textAnchor="middle" fontFamily="Goga" fontWeight="500">{m}</text>
+        <text key={i} x={toX(i)} y={H - 8} fill="#9ca3af" fontSize="9" textAnchor="middle" fontFamily="Montserrat" fontWeight="500">{m}</text>
       ))}
     </svg>
   );
@@ -234,7 +234,7 @@ function RevenueChart({ data }) {
       {[0, 25, 50, 75, 100].map(v => (
         <g key={v}>
           <line x1={pL} y1={toRevY(v)} x2={W - pR} y2={toRevY(v)} stroke="#e2e8f0" strokeDasharray="4 4"/>
-          <text x={pL - 6} y={toRevY(v) + 4} fill="#94a3b8" fontSize="9" textAnchor="end" fontFamily="Goga">{v}</text>
+          <text x={pL - 6} y={toRevY(v) + 4} fill="#94a3b8" fontSize="9" textAnchor="end" fontFamily="Montserrat">{v}</text>
         </g>
       ))}
       {/* Revenue bars */}
@@ -254,7 +254,7 @@ function RevenueChart({ data }) {
       ))}
       {/* X Labels */}
       {months.map((m, i) => (
-        <text key={i} x={toX(i)} y={H - 4} fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="Goga">{m}</text>
+        <text key={i} x={toX(i)} y={H - 4} fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="Montserrat">{m}</text>
       ))}
     </svg>
   );
@@ -341,14 +341,14 @@ function ProductionChart({ data }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg">
       {data.products.map((p, i) => (
         <g key={i}>
-          <text x={pL - 6} y={yBase(i) + barH} fill="#64748b" fontSize="10" textAnchor="end" fontFamily="Goga" fontWeight="600">{p}</text>
+          <text x={pL - 6} y={yBase(i) + barH} fill="#64748b" fontSize="10" textAnchor="end" fontFamily="Montserrat" fontWeight="600">{p}</text>
           {/* Plan bar */}
           <rect x={pL} y={yBase(i)} width={toW(data.plan[i])} height={barH} rx="3" fill="#e2e8f0"/>
-          <text x={pL + toW(data.plan[i]) + 4} y={yBase(i) + barH - 2} fill="#94a3b8" fontSize="9" fontFamily="Goga">{data.plan[i]}</text>
+          <text x={pL + toW(data.plan[i]) + 4} y={yBase(i) + barH - 2} fill="#94a3b8" fontSize="9" fontFamily="Montserrat">{data.plan[i]}</text>
           {/* Actual bar */}
           <rect x={pL} y={yBase(i) + barH + 2} width={toW(data.actual[i])} height={barH} rx="3"
             fill={data.actual[i] / data.plan[i] >= 0.9 ? '#22C55E' : data.actual[i] / data.plan[i] >= 0.75 ? '#F59E0B' : '#EF4444'}/>
-          <text x={pL + toW(data.actual[i]) + 4} y={yBase(i) + barH * 2 + 2} fill="#64748b" fontSize="9" fontFamily="Goga">{data.actual[i]}</text>
+          <text x={pL + toW(data.actual[i]) + 4} y={yBase(i) + barH * 2 + 2} fill="#64748b" fontSize="9" fontFamily="Montserrat">{data.actual[i]}</text>
         </g>
       ))}
     </svg>
@@ -432,7 +432,7 @@ function ApprovalsTab() {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                     <span className={`badge ${a.urgency === 'high' ? 'badge-critical' : a.urgency === 'medium' ? 'badge-attention' : 'badge-navy'}`}>{a.type}</span>
-                    {a.amount && <span style={{ fontFamily: 'Goga', fontWeight: 800, fontSize: '0.95rem', color: 'var(--text-h)' }}>{a.amount}</span>}
+                    {a.amount && <span style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '0.95rem', color: 'var(--text-h)' }}>{a.amount}</span>}
                   </div>
                   <div className="approval-item-title" style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-h)', marginTop: '8px' }}>{a.title}</div>
                   <div className="approval-item-desc" style={{ fontSize: '0.78rem', color: 'var(--text-sub)', marginTop: '4px', lineHeight: 1.4 }}>{a.desc}</div>
@@ -3027,7 +3027,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
                 }}>
                   <div style={{ width: '75px', height: '75px', borderRadius: '50%', background: 'var(--bg-card)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-h)', fontFamily: 'Goga' }}>{totalCount}</span>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-h)', fontFamily: 'Montserrat' }}>{totalCount}</span>
                     <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 800 }}>Total</span>
                   </div>
                 </div>
@@ -3653,7 +3653,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                     <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>Deadline: {credit.deadline} • Terms: Net 30</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Goga', fontWeight: 900, color: 'var(--text-h)' }}>{credit.amount}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-h)' }}>{credit.amount}</div>
                     <div style={{ fontSize: '0.65rem', color: 'var(--red)', fontWeight: 800, marginTop: '2px' }}>{credit.overdue}</div>
                   </div>
                 </div>
@@ -3686,7 +3686,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                     <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '2px' }}>Reason: {doc.reason}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Goga', fontWeight: 900, color: 'var(--text-muted)', textDecoration: 'line-through' }}>{doc.value}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-muted)', textDecoration: 'line-through' }}>{doc.value}</div>
                   </div>
                 </div>
               ))}
@@ -3822,7 +3822,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Goga', fontWeight: 900, color: 'var(--text-h)' }}>Pending: {pay.pending}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-h)' }}>Pending: {pay.pending}</div>
                     <div style={{ fontSize: '0.65rem', color: 'var(--amber)', fontWeight: 800, marginTop: '4px' }}>⚠️ {pay.daysLeft}</div>
                   </div>
                 </div>
@@ -4043,7 +4043,7 @@ function FinanceTab({ onDrill }) {
             <div style={{ flex: 1.1, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
                 <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 700 }}>Total spend</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--text-h)', marginTop: '2px', fontFamily: 'Goga', letterSpacing: '-0.02em' }}>64,9 Cr</div>
+                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--text-h)', marginTop: '2px', fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}>64,9 Cr</div>
               </div>
               <div className="donut-legend" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
                 {MOCK.expenses.map((e, i) => (
@@ -4216,7 +4216,7 @@ function ProductionTab({ onDrill }) {
                 <div style={{ margin: '0.625rem 0', display: 'flex', justifyContent: 'space-around' }}>
                   {[['A', m.avail], ['P', m.perf], ['Q', m.qual]].map(([lbl, val], j) => (
                     <div key={j} style={{ textAlign: 'center' }}>
-                      <div style={{ fontFamily: 'Goga', fontWeight: 700, fontSize: '0.8rem', color: val >= 90 ? 'var(--green)' : val >= 75 ? 'var(--amber)' : 'var(--red)' }}>{val > 0 ? `${val}%` : '—'}</div>
+                      <div style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '0.8rem', color: val >= 90 ? 'var(--green)' : val >= 75 ? 'var(--amber)' : 'var(--red)' }}>{val > 0 ? `${val}%` : '—'}</div>
                       <div style={{ fontSize: '0.6rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{lbl}</div>
                     </div>
                   ))}
@@ -4416,7 +4416,7 @@ function InventoryTab({ onDrill }) {
                       <span className="badge badge-navy" style={{ fontSize: '0.78rem', textTransform: 'none' }}>{item.category}</span>
                     </td>
                     <td>
-                      <span style={{ fontFamily: 'Goga', fontWeight: 800, fontSize: '0.88rem', color: item.status === 'Critical' ? 'var(--red)' : item.status === 'Low' ? 'var(--amber)' : 'var(--green)' }}>
+                      <span style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '0.88rem', color: item.status === 'Critical' ? 'var(--red)' : item.status === 'Low' ? 'var(--amber)' : 'var(--green)' }}>
                         {item.qty} {item.unit}
                       </span>
                     </td>
@@ -5019,7 +5019,7 @@ function AttendanceTab() {
               <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>{c.label}</div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px', marginTop: '2px' }}>
-                  <span style={{ fontFamily: 'Goga', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
+                  <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
                   <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)' }}>{c.unit}</span>
                 </div>
               </div>
@@ -5863,7 +5863,7 @@ export default function App() {
 
           <div style={{ marginTop: '1.5rem', padding: '0.875rem', background: 'var(--bg-app)', borderRadius: 10, border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Today · {nowDate()}</div>
-            <div style={{ fontSize: '0.72rem', fontFamily: 'Goga', color: 'var(--text-sub)', fontWeight: 700 }}>{nowTime()}</div>
+            <div style={{ fontSize: '0.72rem', fontFamily: 'Montserrat', color: 'var(--text-sub)', fontWeight: 700 }}>{nowTime()}</div>
           </div>
         </div>
       </div>
@@ -6192,7 +6192,6 @@ export default function App() {
             }
             if (activeTab === 'employee_dashboard') {
               return [
-                { key: 'salesvol', title: 'Personal Sales Volume', icon: CircleDollarSign, color: '#0ea5e9', lightColor: '#e0f2fe', val: '12.4', unit: 'Lakh', label: 'Target: ₹15L (82.6%)', guide: '₹15L', type: 'bar', data: [8.5, 9.0, 10.2, 11.0, 9.8, 12.0, 11.5, 12.4] },
                 { key: 'dealsclosed', title: 'Deals Closed This Month', icon: CheckSquare, color: '#22c55e', lightColor: '#dcfce7', val: '8', unit: 'deals', label: 'Personal Target: 10', guide: '10', type: 'bar', data: [4, 6, 7, 5, 8, 7, 6, 8] },
                 { key: 'leadfollow', title: 'Leads Followed Up', icon: Users, color: '#ef4444', lightColor: '#fee2e2', val: '42', unit: 'leads', label: '91% response rate', guide: '40', type: 'line', data: [32, 35, 38, 41, 39, 43, 40, 42] },
                 { key: 'empleaves', title: 'Pending Leave Submits', icon: Calendar, color: '#f59e0b', lightColor: '#fef3c7', val: '1', unit: 'request', label: 'Awaiting HR review', guide: '0', type: 'line', data: [0, 0, 1, 0, 0, 1, 0, 1] }
@@ -6209,7 +6208,7 @@ export default function App() {
           const cards = getCards();
 
           return (
-            <div className="kpi-strip" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
+            <div className="kpi-strip" style={{ display: 'grid', gridTemplateColumns: `repeat(${cards.length}, 1fr)`, gap: '1.25rem', marginBottom: '1.5rem' }}>
               {cards.map(c => {
                 const Icon = c.icon;
                 return (
@@ -6242,7 +6241,7 @@ export default function App() {
                     <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>{c.label}</div>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px', marginTop: '2px' }}>
-                        <span style={{ fontFamily: 'Goga', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
+                        <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
                         <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)' }}>{c.unit}</span>
                       </div>
                     </div>
@@ -6440,7 +6439,7 @@ export default function App() {
                 { l: 'Headcount', v: drillData.hc },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Goga', fontWeight: 800, fontSize: '1.5rem', color: s.c ? `var(--${s.c})` : 'var(--text-h)' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: s.c ? `var(--${s.c})` : 'var(--text-h)' }}>{s.v}</div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
@@ -6469,7 +6468,7 @@ export default function App() {
               ].map((s, i) => (
                 <div key={i} style={{ padding: '0.875rem', background: 'var(--bg-app)', borderRadius: 10 }}>
                   <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>{s.l}</div>
-                  <div style={{ fontFamily: 'Goga', fontWeight: 800, color: 'var(--text-h)', fontSize: '0.9rem' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, color: 'var(--text-h)', fontSize: '0.9rem' }}>{s.v}</div>
                 </div>
               ))}
             </div>
@@ -6491,7 +6490,7 @@ export default function App() {
                 { l: 'Quality',      v: drillData.qual  ? `${drillData.qual}%`  : '—', c: 'navy' },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Goga', fontWeight: 800, fontSize: '1.5rem', color: `var(--${s.c})` }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: `var(--${s.c})` }}>{s.v}</div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
@@ -6515,7 +6514,7 @@ export default function App() {
                 { l: 'Target', v: drillData.target !== null ? `${drillData.target}${typeof drillData.target === 'number' && drillData.target <= 100 ? '%' : ''}` : 'N/A' },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Goga', fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-h)' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-h)' }}>{s.v}</div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
@@ -6529,7 +6528,7 @@ export default function App() {
         {(drillType === 'vendor' || drillType === 'inventory' || drillType === 'pl') && drillData && (
           <div>
             <div style={{ background: 'var(--bg-app)', borderRadius: 10, padding: '1.25rem', marginBottom: '1rem' }}>
-              <pre style={{ fontFamily: 'Goga', fontSize: '0.78rem', color: 'var(--text-body)', whiteSpace: 'pre-wrap' }}>{JSON.stringify(drillData, null, 2)}</pre>
+              <pre style={{ fontFamily: 'Montserrat', fontSize: '0.78rem', color: 'var(--text-body)', whiteSpace: 'pre-wrap' }}>{JSON.stringify(drillData, null, 2)}</pre>
             </div>
             <div style={{ display: 'flex', gap: '0.625rem' }}>
               <button className="btn btn-primary btn-sm">📊 Detailed Report</button>
