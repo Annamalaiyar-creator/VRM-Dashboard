@@ -1,0 +1,22 @@
+{
+  "feature": "Complaint Entry & Register",
+  "database_schema": {
+    "table_name": "complaints",
+    "engine": "PostgreSQL (Supabase)",
+    "ddl": "CREATE TABLE IF NOT EXISTS complaints (complaint_no TEXT PRIMARY KEY, complaint_date TEXT, raised_by TEXT, assigned_to TEXT, invoice_no TEXT, customer_name TEXT, customer_contact TEXT, complaint_type TEXT, severity TEXT, description TEXT, status TEXT, sla_target TEXT, sla_due_date TEXT, ageing TEXT, sla_status TEXT, customer_response TEXT, first_response_date TEXT, root_cause_category TEXT, root_cause_details TEXT, corrective_action TEXT, resolution_details TEXT, resolved_date TEXT, closed_date TEXT, closure_category TEXT);"
+  },
+  "database_seed_data": [
+    { "complaintNo": "CMP-260709-004", "complaintDate": "09-Jul", "customerName": "Vetri Solar", "complaintType": "Production", "severity": "Showstopper", "assignedTo": "Jawahir", "status": "In Progress", "slaStatus": "Overdue", "ageing": "15" },
+    { "complaintNo": "CMP-260712-005", "complaintDate": "12-Jul", "customerName": "BlueRay Solar", "complaintType": "Dipping", "severity": "Blocker", "assignedTo": "Purusothaman", "status": "Waiting Internal", "slaStatus": "Overdue", "ageing": "12" },
+    { "complaintNo": "CMP-260720-008", "complaintDate": "20-Jul", "customerName": "EcoSpark EPC", "complaintType": "Quality", "severity": "Critical", "assignedTo": "Jawahir", "status": "In Progress", "slaStatus": "Overdue", "ageing": "4" },
+    { "complaintNo": "CMP-260723-009", "complaintDate": "23-Jul", "customerName": "Nova Green", "complaintType": "Quantity", "severity": "Medium", "assignedTo": "Purusothaman", "status": "Waiting Customer", "slaStatus": "Within SLA", "ageing": "1" },
+    { "complaintNo": "CMP-260714-006", "complaintDate": "14-Jul", "customerName": "Kaveri Power", "complaintType": "Availability", "severity": "High", "assignedTo": "Jawahir", "status": "Resolved", "slaStatus": "Closed", "ageing": "4" }
+  ],
+  "api_endpoints": {
+    "GET": "/api/complaints",
+    "POST": "/api/complaints",
+    "PUT": "/api/complaints/:complaintNo"
+  },
+  "react_component_file": "client/src/App.jsx",
+  "note": "The React code below handles subtab switching ('overview', 'register', 'form'), binds form controls to state, and communicates with the backend REST APIs."
+}

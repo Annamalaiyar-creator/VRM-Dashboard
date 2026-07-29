@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkHub - Employee Work Hub & Operations Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-role="employee">
+
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="brand-section">
+            <div class="brand-logo">W</div>
+            <h1 class="brand-title">WorkHub</h1>
+        </div>
+
+        <div class="header-controls">
+            <!-- Global Role Switcher for demonstration -->
+            <div class="filter-group">
+                <label for="roleSelector" style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);">VIEW AS:</label>
+                <select id="roleSelector">
+                    <option value="employee">Employee</option>
+                    <option value="teamlead">Team Lead</option>
+                    <option value="hr">HR Specialist</option>
+                    <option value="executive">Managing Director</option>
+                </select>
+            </div>
+
+            <!-- Global Filter Controls -->
+            <div class="filter-group">
+                <select id="deptSelector">
+                    <option value="all">All Departments</option>
+                    <option value="marketing">Digital Marketing</option>
+                    <option value="design">UI/UX Design</option>
+                    <option value="dev">Software Development</option>
+                    <option value="hr-dept">HR & Operations</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <input type="date" id="dateSelector" value="2026-07-27">
+            </div>
+
+            <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <span id="themeToggleIcon">🌙</span>
+            </button>
+
+            <!-- User Profile & Status -->
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="User Profile" class="avatar" id="userAvatar">
+                <div class="user-info">
+                    <span class="user-name" id="userName">Sanjai Kumar</span>
+                    <span class="user-role-badge" id="userRoleBadge">Employee</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="dashboard-container">
+        
+        <!-- Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Pending Tasks</div>
+                <div class="metric-value" id="metricPendingTasks">8</div>
+                <div class="metric-trend up" id="trendPendingTasks">
+                    <span>↑</span> <span>12% vs last week</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Completed (This Week)</div>
+                <div class="metric-value" id="metricCompletedTasks">14</div>
+                <div class="metric-trend up" id="trendCompletedTasks">
+                    <span>↑</span> <span>8% vs last week</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Attendance Rate</div>
+                <div class="metric-value" id="metricAttendance">98.4%</div>
+                <div class="metric-trend up" id="trendAttendance">
+                    <span>↑</span> <span>0.2% vs target</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Hours Logged</div>
+                <div class="metric-value" id="metricHours">38.5h</div>
+                <div class="metric-trend down" id="trendHours">
+                    <span>↓</span> <span>1.5h vs target</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Section Layout -->
+        <div class="main-layout">
+            
+            <!-- Left Main Column -->
+            <div class="main-column">
+                
+                <!-- Team Lead Announcement Banner -->
+                <div class="announcement-banner" id="announcementBanner">
+                    <span class="announcement-icon">📢</span>
+                    <div class="announcement-content">
+                        <h4 id="announcementTitle">Sprint Planning Session Today</h4>
+                        <p id="announcementDesc">Reminder: The Sprint 4 planning and retro kicks off today at 3:00 PM EST. Please update your board tasks beforehand.</p>
+                    </div>
+                </div>
+
+                <!-- Team Lead Role Only: Task Delegation Panel -->
+                <div class="dashboard-card role-section role-teamlead" id="taskDelegationCard">
+                    <div class="card-header">
+                        <h3 class="card-title">Task Delegation Panel</h3>
+                    </div>
+                    <form id="taskDelegationForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="delegatedTaskName">Task Name</label>
+                                <input type="text" id="delegatedTaskName" required placeholder="e.g., Implement Stripe Webhooks">
+                            </div>
+                            <div class="form-group">
+                                <label for="delegatedAssignee">Assignee</label>
+                                <select id="delegatedAssignee" required>
+                                    <option value="Sanjai Kumar">Sanjai Kumar (UI/UX)</option>
+                                    <option value="Alex Mercer">Alex Mercer (Dev)</option>
+                                    <option value="Elena Rostova">Elena Rostova (Marketing)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="delegatedDeadline">Deadline</label>
+                                <input type="date" id="delegatedDeadline" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="delegatedPriority">Urgency</label>
+                                <select id="delegatedPriority">
+                                    <option value="high">High Priority</option>
+                                    <option value="medium" selected>Medium Priority</option>
+                                    <option value="low">Low Priority</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Delegate & Assign Task</button>
+                    </form>
+                </div>
+
+                <!-- HR Role Only: Leave Approvals Queue -->
+                <div class="dashboard-card role-section role-hr" id="leaveApprovalCard">
+                    <div class="card-header">
+                        <h3 class="card-title">Pending Leave Requests</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Leave Type</th>
+                                    <th>Duration</th>
+                                    <th>Dates</th>
+                                    <th>Reason</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaveRequestsTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- HR Role Only: Employee Directory -->
+                <div class="dashboard-card role-section role-hr" id="employeeDirectoryCard">
+                    <div class="card-header">
+                        <h3 class="card-title">Employee Directory</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Weekly Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody id="directoryTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Active Tasks Table -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="tasksTableTitle">My Active Tasks</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="tasksTable">
+                            <thead>
+                                <tr>
+                                    <th>Task Name</th>
+                                    <th>Assigner</th>
+                                    <th>Deadline</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasksTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Work History Timeline Graph -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Weekly Work Completion Rate</h3>
+                    </div>
+                    <div class="chart-container">
+                        <!-- Custom SVG Chart -->
+                        <svg viewBox="0 0 600 250" class="svg-chart" id="timelineChart">
+                            <!-- SVG elements injected by JS -->
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Column -->
+            <div class="sidebar-column">
+                
+                <!-- Quick Daily Check-In Widget -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daily Attendance</h3>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 0.5rem 0;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="checkin-status active" id="widgetCheckinIndicator"></span>
+                            <span id="widgetCheckinText" style="font-weight: 600;">Checked In today at 09:00 AM</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="checkinBtn">Check Out</button>
+                    </div>
+                </div>
+
+                <!-- Key Alerts Feed -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Critical Alerts</h3>
+                    </div>
+                    <div id="alertsFeed">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Leave Tracker -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Leave Tracker</h3>
+                    </div>
+                    <div class="leave-progress">
+                        <div class="leave-bar-group">
+                            <div class="leave-label">
+                                <span>Annual Paid Leave</span>
+                                <span id="annualLeaveCount">18 / 25 Days Remaining</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill annual" id="annualLeaveFill" style="width: 72%;"></div>
+                            </div>
+                        </div>
+                        <div class="leave-bar-group">
+                            <div class="leave-label">
+                                <span>Sick Leave</span>
+                                <span id="sickLeaveCount">4 / 10 Days Remaining</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill sick" id="sickLeaveFill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Action Navigation Bar - REMOVED PER USER REQUEST -->
+    <!--
+    <nav class="bottom-nav">
+        <div class="nav-actions">
+            <button class="btn btn-primary" id="btnSubmitWork">Submit Work</button>
+            <button class="btn btn-secondary" id="btnRequestLeave">Request Leave</button>
+        </div>
+        <div class="nav-shortcuts">
+            <span>Shortcuts:</span>
+            <a href="https://figma.com" target="_blank" class="shortcut-link">Figma</a>
+            <a href="https://github.com" target="_blank" class="shortcut-link">GitHub</a>
+            <a href="https://jira.com" target="_blank" class="shortcut-link">Jira Board</a>
+        </div>
+    </nav>
+    -->
+
+    <!-- Modals -->
+    <!-- Submit Work Modal -->
+    <div class="modal-overlay" id="submitWorkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Completed Work</h3>
+                <button class="modal-close" onclick="closeModal('submitWorkModal')">&times;</button>
+            </div>
+            <form id="submitWorkForm">
+                <div class="form-group">
+                    <label for="submitTaskSelect">Select Completed Task</label>
+                    <select id="submitTaskSelect" required>
+                        <!-- Injected by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="submitLink">Deliverable / Git PR Link</label>
+                    <input type="url" id="submitLink" required placeholder="https://github.com/org/repo/pull/123">
+                </div>
+                <div class="form-group">
+                    <label for="submitNotes">Submission Notes</label>
+                    <textarea id="submitNotes" rows="3" placeholder="Describe the implemented solution..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('submitWorkModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Delivery</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Leave Modal -->
+    <div class="modal-overlay" id="requestLeaveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Request Absence / Leave</h3>
+                <button class="modal-close" onclick="closeModal('requestLeaveModal')">&times;</button>
+            </div>
+            <form id="requestLeaveForm">
+                <div class="form-group">
+                    <label for="leaveType">Leave Type</label>
+                    <select id="leaveType" required>
+                        <option value="Annual">Annual Paid Leave</option>
+                        <option value="Sick">Sick Leave</option>
+                        <option value="Maternity/Paternity">Maternity/Paternity</option>
+                        <option value="Unpaid">Unpaid Leave</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="leaveStart">Start Date</label>
+                        <input type="date" id="leaveStart" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveEnd">End Date</label>
+                        <input type="date" id="leaveEnd" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="leaveReason">Reason for Absence</label>
+                    <textarea id="leaveReason" rows="3" required placeholder="State details if necessary..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('requestLeaveModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
