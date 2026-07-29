@@ -38,8 +38,10 @@ import {
   Heart,
   MoreVertical,
   Save,
-  Send
+  Send,
+  Download
 } from 'lucide-react';
+import * as XLSX from 'xlsx';
 
 const API = 'https://vrm-dashboard-72t8.onrender.com/api';
 const CEO_EMAIL    = 'executive@workhub.com';
@@ -1473,6 +1475,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
   const [loading, setLoading] = React.useState(true);
   const [selectedComplaint, setSelectedComplaint] = React.useState(null);
   const [salesConfirm, setSalesConfirm] = React.useState({ show: false, status: 'Open' });
+  const [salesEditComplaint, setSalesEditComplaint] = React.useState(null);
+  const [prodEditComplaint, setProdEditComplaint] = React.useState(null);
 
   const fetchComplaints = React.useCallback(() => {
     const token = localStorage.getItem('vrm_token');
@@ -1620,6 +1624,67 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
     }
   };
 
+  const handleSalesEditSave = async () => {
+    if (!salesEditComplaint) return;
+    const token = localStorage.getItem('vrm_token');
+    try {
+      const res = await fetch(`${API}/complaints/${salesEditComplaint.complaintNo}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(salesEditComplaint)
+      });
+      if (!res.ok) throw new Error('Failed to update complaint');
+      alert(`Complaint ${salesEditComplaint.complaintNo} updated successfully!`);
+      setSalesEditComplaint(null);
+      fetchComplaints();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDownloadExcel = () => {
+    let listToExport = complaints;
+    if (user?.role === 'teamlead') {
+      const myName = 'Jawahir';
+      listToExport = complaints.filter(c => c.assignedTo && c.assignedTo.toLowerCase() === myName.toLowerCase());
+    } else if (user?.role === 'employee') {
+      const myName = user?.name || 'Sanjai Kumar';
+      listToExport = complaints.filter(c => c.raisedBy && c.raisedBy.toLowerCase() === myName.toLowerCase());
+    }
+
+    if (listToExport.length === 0) {
+      alert('No complaints available to download.');
+      return;
+    }
+
+    // Format dataset as array of objects
+    const data = listToExport.map(c => ({
+      'Complaint No': c.complaintNo || '',
+      'Date': c.complaintDate || '',
+      'Customer Name': c.customerName || '',
+      'Invoice No': c.invoiceNo || '',
+      'Contact': c.customerContact || '',
+      'Type': c.complaintType || '',
+      'Severity': c.severity || '',
+      'Description': c.description || '',
+      'Assigned To': c.assignedTo || '',
+      'Status': c.status || '',
+      'Ageing (Days)': c.ageing || 0,
+      'SLA Status': c.slaStatus || ''
+    }));
+
+    // Generate worksheet & workbook
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Complaints');
+
+    // Export file
+    XLSX.writeFile(workbook, `Complaints_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
+
   // ─── 2. PRODUCTION HEAD VIEW (Inline edits) ───
   const [editStates, setEditStates] = React.useState({});
 
@@ -1698,6 +1763,17 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
     return (
       <div style={{ padding: '1rem' }}>
+        {subTab === 'register' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.25rem' }}>
+            <button 
+              onClick={handleDownloadExcel}
+              className="btn btn-primary"
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+            >
+              <Download size={14} /> Export to Excel
+            </button>
+          </div>
+        )}
         {subTab === 'overview' && (
           <>
             {/* KPI STRIP */}
@@ -1768,59 +1844,400 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ClipboardList size={18} /> Complaints Registered by {myName}
             </div>
-            <div className="card-body-flush" style={{ overflowX: 'auto' }}>
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Complaint No</th>
-                    <th>Date</th>
-                    <th>Customer Name</th>
-                    <th>Complaint Type</th>
-                    <th>Severity</th>
-                    <th>Assigned To</th>
-                    <th>Status</th>
-                    <th>Ageing</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {myRaisedComplaints.length === 0 ? (
-                    <tr>
-                      <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                        No complaints registered by you.
-                      </td>
-                    </tr>
-                  ) : (
-                    myRaisedComplaints.map(c => {
-                      const isOverdue = c.slaStatus === 'Overdue';
-                      return (
-                        <tr 
-                          key={c.complaintNo} 
-                          style={{ 
-                            background: isOverdue ? 'rgba(239, 68, 68, 0.05)' : 'inherit',
-                            color: isOverdue ? '#dc2626' : 'inherit'
-                          }}
-                        >
-                          <td className="cell-mono" style={{ fontWeight: 800 }}>{c.complaintNo}</td>
-                          <td>{c.complaintDate}</td>
-                          <td style={{ fontWeight: 700 }}>{c.customerName}</td>
-                          <td>{c.complaintType}</td>
-                          <td>
-                            <span className={`badge ${isOverdue || ['Showstopper', 'Blocker', 'Critical'].includes(c.severity) ? 'badge-critical' : 'badge-attention'}`} style={{ fontSize: '0.7rem' }}>
-                              {c.severity}
-                            </span>
-                          </td>
-                          <td>{c.assignedTo}</td>
-                          <td style={{ fontWeight: 700 }}>
-                            {isOverdue ? `${c.status} (OVERDUE)` : c.status}
-                          </td>
-                          <td style={{ fontWeight: 800 }}>{c.ageing} Days</td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', padding: '1.5rem' }}>
+              {myRaisedComplaints.length === 0 ? (
+                <div className="card" style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  No complaints registered by you.
+                </div>
+              ) : (
+                myRaisedComplaints.map(c => {
+                  const isOverdue = c.slaStatus === 'Overdue';
+                  return (
+                    <div 
+                      key={c.complaintNo}
+                      style={{
+                        background: 'var(--bg-card)',
+                        borderRadius: '24px',
+                        border: '2px solid transparent',
+                        padding: '1.75rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem',
+                        position: 'relative',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+                        e.currentTarget.style.borderColor = '#ea580c';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)';
+                        e.currentTarget.style.borderColor = 'transparent';
+                      }}
+                    >
+                      {/* Pills Row (like ice grey, 3.2s, Manual) */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        <span style={{
+                          background: 'var(--bg-app)',
+                          color: 'var(--text-h)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <ClipboardList size={12} /> {c.complaintType}
+                        </span>
+                        <span style={{
+                          background: c.severity === 'Critical' || c.severity === 'High' ? '#fee2e2' : 'var(--bg-app)',
+                          color: c.severity === 'Critical' || c.severity === 'High' ? '#dc2626' : 'var(--text-muted)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <ShieldAlert size={12} /> {c.severity}
+                        </span>
+                        <span style={{
+                          background: 'var(--bg-app)',
+                          color: 'var(--text-muted)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <Clock size={12} /> {c.ageing} Days
+                        </span>
+                      </div>
+
+                      {/* Title & Subtitle block (like Porsche 911 / GT3 RS) */}
+                      <div>
+                        <h2 style={{
+                          fontSize: '1.25rem',
+                          fontWeight: 900,
+                          color: 'var(--text-h)',
+                          margin: 0,
+                          lineHeight: '1.2',
+                          letterSpacing: '-0.02em'
+                        }}>
+                          {c.customerName}
+                        </h2>
+                        <h3 style={{
+                          fontSize: '1.1rem',
+                          fontWeight: 800,
+                          color: 'var(--text-muted)',
+                          margin: '2px 0 0 0',
+                          textTransform: 'uppercase',
+                          opacity: 0.6
+                        }}>
+                          {c.complaintNo}
+                        </h3>
+                      </div>
+
+                      {/* Description Paragraph */}
+                      <p style={{
+                        fontSize: '0.8rem',
+                        color: 'var(--text-body)',
+                        lineHeight: '1.5',
+                        margin: 0,
+                        flexGrow: 1
+                      }}>
+                        {c.description}
+                      </p>
+
+                      {/* Bottom Metadata Info */}
+                      <div style={{
+                        borderTop: '1px solid var(--border)',
+                        paddingTop: '0.75rem',
+                        marginTop: '0.25rem',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.7rem',
+                        color: 'var(--text-muted)',
+                        fontWeight: 700
+                      }}>
+                        <span>Assigned: <strong style={{ color: 'var(--text-h)' }}>{c.assignedTo}</strong></span>
+                        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedComplaint(c);
+                            }}
+                            className="btn btn-ghost"
+                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                          >
+                            View
+                          </button>
+                          {!['Resolved', 'Closed'].includes(c.status) && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSalesEditComplaint(c);
+                              }}
+                              className="btn btn-primary"
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
+                            >
+                              Edit
+                            </button>
+                          )}
+                          <span style={{
+                            background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                            color: '#ffffff',
+                            padding: '2px 8px',
+                            borderRadius: '6px',
+                            fontWeight: 900,
+                            fontSize: '0.6rem',
+                            textTransform: 'uppercase',
+                            marginLeft: '4px'
+                          }}>
+                            {isOverdue ? 'Overdue' : c.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
+            {salesEditComplaint && (
+              <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 9999,
+                backdropFilter: 'blur(3px)'
+              }}>
+                <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
+                  <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 800 }}>Edit Complaint: {salesEditComplaint.complaintNo}</span>
+                    <button onClick={() => setSalesEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                  </div>
+                  <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Customer Name *</label>
+                        <input 
+                          type="text" 
+                          value={salesEditComplaint.customerName || ''} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, customerName: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        />
+                      </div>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Invoice No *</label>
+                        <input 
+                          type="text" 
+                          value={salesEditComplaint.invoiceNo || ''} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, invoiceNo: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Customer Contact *</label>
+                        <input 
+                          type="text" 
+                          value={salesEditComplaint.customerContact || ''} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, customerContact: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        />
+                      </div>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Assigned To</label>
+                        <select 
+                          value={salesEditComplaint.assignedTo || 'Jawahir'} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, assignedTo: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        >
+                          <option value="Jawahir">Jawahir (Production Head)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Complaint Type *</label>
+                        <select 
+                          value={salesEditComplaint.complaintType || 'Production'} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, complaintType: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        >
+                          <option value="Quality Mismatch">Quality Mismatch</option>
+                          <option value="Quantity Issue">Quantity Issue</option>
+                          <option value="Delay in Delivery">Delay in Delivery</option>
+                          <option value="Availability Issue">Availability Issue</option>
+                        </select>
+                      </div>
+                      <div className="form-field">
+                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Severity *</label>
+                        <select 
+                          value={salesEditComplaint.severity || 'Medium'} 
+                          onChange={e => setSalesEditComplaint(p => ({ ...p, severity: e.target.value }))}
+                          style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                        >
+                          <option value="Low">Low</option>
+                          <option value="Medium">Medium</option>
+                          <option value="High">High</option>
+                          <option value="Critical">Critical</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-field">
+                      <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Status *</label>
+                      <select 
+                        value={salesEditComplaint.status || 'Open'} 
+                        onChange={e => setSalesEditComplaint(p => ({ ...p, status: e.target.value }))}
+                        style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
+                      >
+                        <option value="Draft">Draft</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                      </select>
+                    </div>
+
+                    <div className="form-field">
+                      <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Problem Description *</label>
+                      <textarea 
+                        rows="3"
+                        value={salesEditComplaint.description || ''} 
+                        onChange={e => setSalesEditComplaint(p => ({ ...p, description: e.target.value }))}
+                        style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '0.8rem', color: 'var(--text-body)', resize: 'none', background: 'var(--bg-app)' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+                      <button onClick={() => setSalesEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 800 }}>Cancel</button>
+                      <button onClick={handleSalesEditSave} className="btn btn-primary" style={{ padding: '8px 24px', fontWeight: 800 }}>Save Changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selectedComplaint && (() => {
+              const c = selectedComplaint;
+              const isResolved = c.status === 'Resolved' || c.status === 'Closed';
+              
+              // Calculate days taken if resolved
+              let daysTakenText = 'Under progress';
+              if (isResolved) {
+                daysTakenText = `${c.ageing || 0} Days to Resolve`;
+              }
+
+              return (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(0,0,0,0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 9999,
+                  backdropFilter: 'blur(3px)'
+                }}>
+                  <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
+                    <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
+                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                    </div>
+                    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                        <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
+                          {c.description}
+                        </div>
+                      </div>
+
+                      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                        
+                        {isResolved ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 700, color: '#16a34a' }}>
+                              <span>Status: Completed / Resolved</span>
+                              <span>{daysTakenText}</span>
+                            </div>
+                            {c.resolvedDate && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Resolved Date:</strong> {c.resolvedDate}
+                              </div>
+                            )}
+                            {c.rootCauseDetails && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Root Cause:</strong> {c.rootCauseDetails}
+                              </div>
+                            )}
+                            {c.correctiveAction && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Corrective Action:</strong> {c.correctiveAction}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff7ed', border: '1px solid #fed7aa', padding: '10px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, color: '#ea580c' }}>
+                            <span>Status: {c.status} (In Progress)</span>
+                            <span>Ageing: {c.ageing || 0} Days Active</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
 
@@ -2062,6 +2479,17 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
     return (
       <div style={{ padding: '1rem' }}>
+        {subTab === 'register' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.25rem' }}>
+            <button 
+              onClick={handleDownloadExcel}
+              className="btn btn-primary"
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+            >
+              <Download size={14} /> Export to Excel
+            </button>
+          </div>
+        )}
         {subTab === 'overview' ? (
           <>
             {/* PERSONAL METRIC CARDS */}
@@ -2260,17 +2688,42 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         fontWeight: 700
                       }}>
                         <span>Date: <strong style={{ color: 'var(--text-h)' }}>{c.complaintDate}</strong></span>
-                        <span style={{
-                          background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
-                          color: '#ffffff',
-                          padding: '2px 8px',
-                          borderRadius: '6px',
-                          fontWeight: 900,
-                          fontSize: '0.6rem',
-                          textTransform: 'uppercase'
-                        }}>
-                          {isOverdue ? 'Overdue' : c.status}
-                        </span>
+                        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedComplaint(c);
+                            }}
+                            className="btn btn-ghost"
+                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                          >
+                            View
+                          </button>
+                          {!['Resolved', 'Closed'].includes(c.status) && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setProdEditComplaint(c);
+                              }}
+                              className="btn btn-primary"
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
+                            >
+                              Edit
+                            </button>
+                          )}
+                          <span style={{
+                            background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                            color: '#ffffff',
+                            padding: '2px 8px',
+                            borderRadius: '6px',
+                            fontWeight: 900,
+                            fontSize: '0.6rem',
+                            textTransform: 'uppercase',
+                            marginLeft: '4px'
+                          }}>
+                            {isOverdue ? 'Overdue' : c.status}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -2279,8 +2732,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             </div>
 
             {/* DETAILS MODAL FOR TASK MANAGEMENT */}
-            {selectedComplaint && (() => {
-              const c = selectedComplaint;
+            {prodEditComplaint && (() => {
+              const c = prodEditComplaint;
               const localState = editStates[c.complaintNo] || {};
               const currentStatus = localState.status !== undefined ? localState.status : c.status;
               const currentRootCause = localState.rootCauseDetails !== undefined ? localState.rootCauseDetails : c.rootCauseDetails;
@@ -2304,7 +2757,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontWeight: 800 }}>Manage Task: {c.complaintNo}</span>
-                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                      <button onClick={() => setProdEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
                     </div>
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div>
@@ -2356,11 +2809,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 800 }}>Cancel</button>
+                        <button onClick={() => setProdEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 800 }}>Cancel</button>
                         <button 
                           onClick={async () => {
                             await handleProdSave(c.complaintNo, c);
-                            setSelectedComplaint(null);
+                            setProdEditComplaint(null);
                           }} 
                           className="btn btn-primary" 
                           disabled={!hasChanges}
@@ -2368,6 +2821,107 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         >
                           Save & Apply
                         </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* READ-ONLY DETAILS MODAL FOR PRODUCTION VIEW */}
+            {selectedComplaint && (() => {
+              const c = selectedComplaint;
+              const isResolved = c.status === 'Resolved' || c.status === 'Closed';
+              
+              let daysTakenText = 'Under progress';
+              if (isResolved) {
+                daysTakenText = `${c.ageing || 0} Days to Resolve`;
+              }
+
+              return (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(0,0,0,0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 9999,
+                  backdropFilter: 'blur(3px)'
+                }}>
+                  <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
+                    <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
+                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                    </div>
+                    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                        <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
+                          {c.description}
+                        </div>
+                      </div>
+
+                      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                        
+                        {isResolved ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 700, color: '#16a34a' }}>
+                              <span>Status: Completed / Resolved</span>
+                              <span>{daysTakenText}</span>
+                            </div>
+                            {c.resolvedDate && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Resolved Date:</strong> {c.resolvedDate}
+                              </div>
+                            )}
+                            {c.rootCauseDetails && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Root Cause:</strong> {c.rootCauseDetails}
+                              </div>
+                            )}
+                            {c.correctiveAction && (
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                                <strong>Corrective Action:</strong> {c.correctiveAction}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff7ed', border: '1px solid #fed7aa', padding: '10px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, color: '#ea580c' }}>
+                            <span>Status: {c.status} (In Progress)</span>
+                            <span>Ageing: {c.ageing || 0} Days Active</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
                       </div>
                     </div>
                   </div>
@@ -2417,6 +2971,17 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
   return (
     <div style={{ padding: '1rem' }}>
+      {subTab === 'register' && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.25rem' }}>
+          <button 
+            onClick={handleDownloadExcel}
+            className="btn btn-primary"
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+          >
+            <Download size={14} /> Export to Excel
+          </button>
+        </div>
+      )}
       {subTab === 'overview' ? (
         <>
           {/* KPI CARDS */}
@@ -2674,17 +3239,30 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       fontWeight: 700
                     }}>
                       <span>Assigned: <strong style={{ color: 'var(--text-h)' }}>{c.assignedTo}</strong></span>
-                      <span style={{
-                        background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
-                        color: '#ffffff',
-                        padding: '2px 8px',
-                        borderRadius: '6px',
-                        fontWeight: 900,
-                        fontSize: '0.6rem',
-                        textTransform: 'uppercase'
-                      }}>
-                        {isOverdue ? 'Overdue' : c.status}
-                      </span>
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedComplaint(c);
+                          }}
+                          className="btn btn-ghost"
+                          style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                        >
+                          View
+                        </button>
+                        <span style={{
+                          background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                          color: '#ffffff',
+                          padding: '2px 8px',
+                          borderRadius: '6px',
+                          fontWeight: 900,
+                          fontSize: '0.6rem',
+                          textTransform: 'uppercase',
+                          marginLeft: '4px'
+                        }}>
+                          {isOverdue ? 'Overdue' : c.status}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );
@@ -5338,8 +5916,8 @@ export default function App() {
                 return (
                   <div className="header-nav-pills">
                     <button className={`header-nav-pill ${complaintSubTab === 'overview' ? 'active' : ''}`} onClick={() => setComplaintSubTab('overview')}>Overview</button>
-                    <button className={`header-nav-pill ${complaintSubTab === 'register' ? 'active' : ''}`} onClick={() => setComplaintSubTab('register')}>Complaint Register</button>
                     <button className={`header-nav-pill ${complaintSubTab === 'form' ? 'active' : ''}`} onClick={() => setComplaintSubTab('form')}>New Complaint</button>
+                    <button className={`header-nav-pill ${complaintSubTab === 'register' ? 'active' : ''}`} onClick={() => setComplaintSubTab('register')}>Complaint Register</button>
                   </div>
                 );
               }
