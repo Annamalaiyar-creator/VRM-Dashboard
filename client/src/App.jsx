@@ -1587,6 +1587,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
       assignedTo: targetAssignedTo,
       slaTarget: '4 Days',
       slaStatus: 'Within SLA',
+      slaDueDate: '',
       ageing: '0',
       customerResponse: 'Awaiting Response',
       firstResponseDate: '',

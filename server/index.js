@@ -303,11 +303,30 @@ app.post('/api/complaints', authenticateToken, async (req, res) => {
                 resolved_date, closed_date, closure_category
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                c.complaintNo, c.complaintDate, c.raisedBy, c.assignedTo, c.invoiceNo, c.customerName,
-                c.customerContact, c.complaintType, c.severity, c.description, c.status, c.slaTarget,
-                c.slaDueDate, c.ageing ? String(c.ageing) : '0', c.slaStatus, c.customerResponse, c.firstResponseDate,
-                c.rootCauseCategory, c.rootCauseDetails, c.correctiveAction, c.resolutionDetails,
-                c.resolvedDate, c.closedDate, c.closureCategory
+                c.complaintNo || null,
+                c.complaintDate || null,
+                c.raisedBy || null,
+                c.assignedTo || null,
+                c.invoiceNo || null,
+                c.customerName || null,
+                c.customerContact || null,
+                c.complaintType || null,
+                c.severity || null,
+                c.description || null,
+                c.status || null,
+                c.slaTarget || null,
+                c.slaDueDate || null,
+                c.ageing ? String(c.ageing) : '0',
+                c.slaStatus || null,
+                c.customerResponse || null,
+                c.firstResponseDate || null,
+                c.rootCauseCategory || null,
+                c.rootCauseDetails || null,
+                c.correctiveAction || null,
+                c.resolutionDetails || null,
+                c.resolvedDate || null,
+                c.closedDate || null,
+                c.closureCategory || null
             ]
         );
         res.status(201).json({ message: 'Complaint created successfully' });
