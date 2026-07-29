@@ -432,22 +432,22 @@ function ApprovalsTab() {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                     <span className={`badge ${a.urgency === 'high' ? 'badge-critical' : a.urgency === 'medium' ? 'badge-attention' : 'badge-navy'}`}>{a.type}</span>
-                    {a.amount && <span style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '0.95rem', color: 'var(--text-h)' }}>{a.amount}</span>}
+                    {a.amount && <span style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-h)' }}>{a.amount}</span>}
                   </div>
-                  <div className="approval-item-title" style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-h)', marginTop: '8px' }}>{a.title}</div>
+                  <div className="approval-item-title" style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-h)', marginTop: '8px' }}>{a.title}</div>
                   <div className="approval-item-desc" style={{ fontSize: '0.78rem', color: 'var(--text-sub)', marginTop: '4px', lineHeight: 1.4 }}>{a.desc}</div>
                 </div>
                 <div className="approval-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
                   <button 
                     className="btn btn-success btn-sm" 
-                    style={{ flex: 1, padding: '8px', fontSize: '0.75rem', fontWeight: 800 }} 
+                    style={{ flex: 1, padding: '8px', fontSize: '0.75rem', fontWeight: 600 }} 
                     onClick={() => setConfirmModal({ type: 'approve', item: a })}
                   >
                     ✓ Approve
                   </button>
                   <button 
                     className="btn btn-danger btn-sm" 
-                    style={{ flex: 1, padding: '8px', fontSize: '0.75rem', fontWeight: 800 }} 
+                    style={{ flex: 1, padding: '8px', fontSize: '0.75rem', fontWeight: 600 }} 
                     onClick={() => setConfirmModal({ type: 'reject', item: a })}
                   >
                     ✕ Reject
@@ -501,7 +501,7 @@ function ApprovalsTab() {
           >
             <div style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>{confirmModal.type === 'approve' ? '✅' : '❌'}</div>
             <div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.35rem' }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.35rem' }}>
                 Confirm {confirmModal.type === 'approve' ? 'Approval' : 'Rejection'}
               </h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-sub)', lineHeight: 1.45, padding: '0 0.5rem' }}>
@@ -511,14 +511,14 @@ function ApprovalsTab() {
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
               <button 
                 className="btn btn-ghost btn-sm" 
-                style={{ flex: 1, padding: '10px', fontSize: '0.78rem', fontWeight: 800 }} 
+                style={{ flex: 1, padding: '10px', fontSize: '0.78rem', fontWeight: 600 }} 
                 onClick={() => setConfirmModal(null)}
               >
                 Cancel
               </button>
               <button 
                 className={`btn ${confirmModal.type === 'approve' ? 'btn-success' : 'btn-danger'} btn-sm`} 
-                style={{ flex: 1, padding: '10px', fontSize: '0.78rem', fontWeight: 800 }} 
+                style={{ flex: 1, padding: '10px', fontSize: '0.78rem', fontWeight: 600 }} 
                 onClick={() => {
                   alert(`${confirmModal.type === 'approve' ? 'Approved' : 'Rejected'}: ${confirmModal.item.title}`);
                   setConfirmModal(null);
@@ -727,7 +727,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
           <Lock size={36} />
         </div>
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-h)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>403 Access Forbidden</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>403 Access Forbidden</h2>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-sub)', maxWidth: '420px', margin: '0 auto', lineHeight: 1.6 }}>
             Security Warning: This console contains cryptographic keys and system authorization maps. Access is restricted exclusively to the **Chief Executive Officer (CEO)**.
           </p>
@@ -755,10 +755,10 @@ function RolesTab({ directory = [], currentUserRole, token }) {
         {/* LEFT PANEL: ROLE SELECTOR */}
         <div className="card" style={{ width: '280px', display: 'flex', flexDirection: 'column', padding: '1rem', flexShrink: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Roles</span>
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Roles</span>
             <button 
               onClick={handleCreateNewRole}
-              style={{ padding: '4px 10px', fontSize: '0.72rem', fontWeight: 800, borderRadius: '6px', background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer' }}
+              style={{ padding: '4px 10px', fontSize: '0.72rem', fontWeight: 600, borderRadius: '6px', background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer' }}
             >
               + Create
             </button>
@@ -799,7 +799,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
           <button 
             onClick={() => setShowAssignModal(true)}
             className="btn btn-secondary btn-sm btn-block" 
-            style={{ marginTop: '1rem', padding: '10px', fontSize: '0.78rem', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+            style={{ marginTop: '1rem', padding: '10px', fontSize: '0.78rem', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
           >
             <Users size={16} /> Manage User Roles
           </button>
@@ -812,17 +812,17 @@ function RolesTab({ directory = [], currentUserRole, token }) {
             {/* Header Settings */}
             <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1.5rem' }}>
               <div style={{ flex: 1 }}>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Role Name</label>
+                <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Role Name</label>
                 <input 
                   type="text" 
                   value={editName} 
                   onChange={e => handleNameChange(e.target.value)} 
-                  style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-h)', width: '100%', border: 'none', borderBottom: '1px solid transparent', padding: '2px 0', background: 'transparent' }} 
+                  style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', width: '100%', border: 'none', borderBottom: '1px solid transparent', padding: '2px 0', background: 'transparent' }} 
                   placeholder="Enter role name..."
                 />
               </div>
               <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Role Color</label>
+                <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Role Color</label>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   {['#ff5a5f', '#22c55e', '#f59e0b', '#8b5cf6', '#0ea5e9', '#ec4899', '#64748b'].map(c => (
                     <button 
@@ -862,7 +862,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
                           justifyContent: 'space-between', 
                           alignItems: 'center', 
                           cursor: 'pointer',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           fontSize: '0.85rem',
                           color: 'var(--text-h)'
                         }}
@@ -878,7 +878,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
                             return (
                               <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '2rem' }}>
                                 <div style={{ flex: 1 }}>
-                                  <div style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--text-h)' }}>{p.permission_key}</div>
+                                  <div style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--text-h)' }}>{p.permission_key}</div>
                                   <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)', marginTop: '2px' }}>{p.description}</div>
                                 </div>
                                 <button 
@@ -943,13 +943,13 @@ function RolesTab({ directory = [], currentUserRole, token }) {
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button 
                     onClick={handleReset}
-                    style={{ background: 'transparent', color: '#94a3b8', border: 'none', fontSize: '0.82rem', fontWeight: 800, cursor: 'pointer', padding: '6px 12px' }}
+                    style={{ background: 'transparent', color: '#94a3b8', border: 'none', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', padding: '6px 12px' }}
                   >
                     Reset
                   </button>
                   <button 
                     onClick={handleSaveChanges}
-                    style={{ background: '#22c55e', color: '#fff', borderRadius: '6px', border: 'none', padding: '6px 16px', fontSize: '0.82rem', fontWeight: 800, cursor: 'pointer', boxShadow: '0 2px 8px rgba(34, 197, 94, 0.2)' }}
+                    style={{ background: '#22c55e', color: '#fff', borderRadius: '6px', border: 'none', padding: '6px 16px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(34, 197, 94, 0.2)' }}
                   >
                     Save Changes
                   </button>
@@ -996,7 +996,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: 'var(--text-h)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-h)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Users size={18} /> User Role Assignment
               </h3>
               <button 
@@ -1034,7 +1034,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
                       }}
                     >
                       <div>
-                        <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-h)' }}>{u.name}</div>
+                        <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-h)' }}>{u.name}</div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>{u.role} · {u.department || u.dept || 'N/A'}</div>
                       </div>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'flex-end', maxWidth: '240px' }}>
@@ -1076,7 +1076,7 @@ function RolesTab({ directory = [], currentUserRole, token }) {
             <button 
               onClick={() => setShowAssignModal(false)}
               className="btn btn-primary btn-block"
-              style={{ padding: '12px', fontSize: '0.82rem', fontWeight: 800 }}
+              style={{ padding: '12px', fontSize: '0.82rem', fontWeight: 600 }}
             >
               Done Managing Roles
             </button>
@@ -1109,13 +1109,13 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
           {activeSubTab === 'general' && (
           <>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--text-h)', marginBottom: '0.25rem' }}>General Settings</h3>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.25rem' }}>General Settings</h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-sub)' }}>Manage organization metadata, corporate naming, and global UI preferences.</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div>
-                <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Organization Name</label>
+                <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Organization Name</label>
                 <input 
                   type="text" 
                   value={orgName} 
@@ -1125,7 +1125,7 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
               </div>
 
               <div>
-                <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Reporting Currency</label>
+                <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Reporting Currency</label>
                 <select 
                   value={currency} 
                   onChange={e => setCurrency(e.target.value)}
@@ -1138,7 +1138,7 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
               </div>
 
               <div>
-                <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>System Timezone</label>
+                <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>System Timezone</label>
                 <input 
                   type="text" 
                   value={timezone} 
@@ -1149,7 +1149,7 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
             </div>
 
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-h)' }}>Notification Subscriptions</div>
+              <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-h)' }}>Notification Subscriptions</div>
               <div style={{ display: 'flex', gap: '2rem' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-body)', cursor: 'pointer' }}>
                   <input type="checkbox" checked={notifEmail} onChange={e => setNotifEmail(e.target.checked)} />
@@ -1172,14 +1172,14 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
         {activeSubTab === 'security' && (
           <>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Security Policies</h3>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Security Policies</h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-sub)' }}>Adjust system authentication rules, MFA prompts, and user session expiry caps.</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg-app)', borderRadius: '10px', border: '1px solid var(--border)' }}>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--text-h)' }}>Two-Factor Authentication (MFA)</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--text-h)' }}>Two-Factor Authentication (MFA)</div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)', marginTop: '2px' }}>Enforce TOTP validation on employee sign-in attempts.</div>
                 </div>
                 <button 
@@ -1213,7 +1213,7 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
               </div>
 
               <div>
-                <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Remember-Me Expiry Cap</label>
+                <label style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Remember-Me Expiry Cap</label>
                 <select 
                   value={sessionLimit} 
                   onChange={e => setSessionLimit(e.target.value)}
@@ -1235,38 +1235,38 @@ function SettingsTab({ currentUserRole, directory, token, activeSubTab, setActiv
         {activeSubTab === 'database' && (
           <>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Database & Engine Status</h3>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Database & Engine Status</h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-sub)' }}>Monitor SQLite connection pools and data pipeline orchestration health.</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)' }}>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)' }}>Engine Type</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '4px' }}>SQLite 3.x (Local)</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '4px' }}>SQLite 3.x (Local)</div>
               </div>
 
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)' }}>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)' }}>DB Connection Status</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--green)', marginTop: '4px' }}>● Connected</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--green)', marginTop: '4px' }}>● Connected</div>
               </div>
 
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)' }}>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)' }}>Total Active Users Seeded</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '4px' }}>6 Operator Profiles</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '4px' }}>6 Operator Profiles</div>
               </div>
 
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)' }}>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)' }}>Storage Size</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '4px' }}>~164 KB</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '4px' }}>~164 KB</div>
               </div>
             </div>
 
             {currentUserRole === 'executive' && (
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
-                <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-h)', marginBottom: '8px' }}>Database Maintenance Options</div>
+                <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-h)', marginBottom: '8px' }}>Database Maintenance Options</div>
                 <button 
                   className="btn btn-danger btn-sm"
-                  style={{ padding: '10px 16px', fontSize: '0.78rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ padding: '10px 16px', fontSize: '0.78rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}
                   onClick={async () => {
                     const confirmSeed = confirm("Are you sure you want to trigger database re-seeding? This resets user roles, tables, and test tasks to default values.");
                     if (confirmSeed) {
@@ -1330,18 +1330,18 @@ function EmployeeDashboardTab({ user }) {
         {/* Column 1: Shift & Attendance Clock */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div className="card" style={{ padding: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Attendance Punch</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Attendance Punch</div>
             
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: 'var(--bg-app)', borderRadius: '10px', border: '1px solid var(--border)', marginBottom: '1rem' }}>
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Current Status</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 900, color: clockedIn ? 'var(--green)' : 'var(--text-muted)', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Current Status</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: clockedIn ? 'var(--green)' : 'var(--text-muted)', marginTop: '2px' }}>
                   {clockedIn ? 'CLOCKED IN' : 'CLOCKED OUT'}
                 </div>
               </div>
               {clockedIn && (
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Shift Entry</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Shift Entry</div>
                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-h)', marginTop: '2px' }}>{punchTime}</div>
                 </div>
               )}
@@ -1350,23 +1350,23 @@ function EmployeeDashboardTab({ user }) {
             <button 
               onClick={toggleClock}
               className={`btn ${clockedIn ? 'btn-danger' : 'btn-primary'} btn-block`}
-              style={{ padding: '12px', fontWeight: 800 }}
+              style={{ padding: '12px', fontWeight: 600 }}
             >
               {clockedIn ? 'Punch Out & End Shift' : 'Punch In & Begin Shift'}
             </button>
           </div>
 
           <div className="card" style={{ padding: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Personal Leave Balances</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Personal Leave Balances</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)', textAlign: 'center' }}>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-sub)' }}>Annual Leave</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-h)', marginTop: '4px' }}>{user?.annualLeave || 18}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '4px' }}>{user?.annualLeave || 18}</div>
                 <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: '2px' }}>Days Left</div>
               </div>
               <div style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--bg-app)', textAlign: 'center' }}>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-sub)' }}>Sick Leave</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-h)', marginTop: '4px' }}>{user?.sickLeave || 4}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '4px' }}>{user?.sickLeave || 4}</div>
                 <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: '2px' }}>Days Left</div>
               </div>
             </div>
@@ -1376,7 +1376,7 @@ function EmployeeDashboardTab({ user }) {
         {/* Column 2: Assigned Operator Tasks */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div className="card" style={{ padding: '1.25rem', flex: 1 }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.75rem' }}>My Assigned Tasks</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.75rem' }}>My Assigned Tasks</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {tasks.map(t => (
                 <div 
@@ -1403,7 +1403,7 @@ function EmployeeDashboardTab({ user }) {
                   <div style={{ flex: 1 }}>
                     <div style={{ 
                       fontSize: '0.82rem', 
-                      fontWeight: 800, 
+                      fontWeight: 600, 
                       color: t.status === 'Completed' ? 'var(--text-muted)' : 'var(--text-h)',
                       textDecoration: t.status === 'Completed' ? 'line-through' : 'none'
                     }}>
@@ -1422,10 +1422,10 @@ function EmployeeDashboardTab({ user }) {
         {/* Column 3: Request Leave Form */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div className="card" style={{ padding: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Apply for Leave</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.75rem' }}>Apply for Leave</div>
             <form onSubmit={handleApplyLeave} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Leave Category</label>
+                <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Leave Category</label>
                 <select 
                   value={leaveType}
                   onChange={e => setLeaveType(e.target.value)}
@@ -1438,7 +1438,7 @@ function EmployeeDashboardTab({ user }) {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Duration (Days)</label>
+                <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Duration (Days)</label>
                 <input 
                   type="number"
                   min="1"
@@ -1450,7 +1450,7 @@ function EmployeeDashboardTab({ user }) {
               </div>
 
               <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Reason / Notes</label>
+                <label style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-sub)', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>Reason / Notes</label>
                 <textarea 
                   rows="3"
                   placeholder="Provide details about leave reason..."
@@ -1458,7 +1458,7 @@ function EmployeeDashboardTab({ user }) {
                 />
               </div>
 
-              <button type="submit" className="btn btn-primary btn-block" style={{ padding: '10px', fontSize: '0.78rem', fontWeight: 800 }}>
+              <button type="submit" className="btn btn-primary btn-block" style={{ padding: '10px', fontSize: '0.78rem', fontWeight: 600 }}>
                 Submit Leave Application
               </button>
             </form>
@@ -1768,7 +1768,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             <button 
               onClick={handleDownloadExcel}
               className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 600 }}
             >
               <Download size={14} /> Export to Excel
             </button>
@@ -1803,19 +1803,19 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             {/* CHARTS GRID */}
             <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1.25rem' }}>
               <div className="card" style={{ padding: '1.25rem' }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem' }}>My Registered Types</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem' }}>My Registered Types</h3>
                 {Object.entries(myTypeCounts).map(([label, count]) => (
                   <div key={label} style={{ display: 'flex', alignItems: 'center', justify: 'space-between', fontSize: '0.75rem', margin: '12px 0' }}>
-                    <span style={{ width: '85px', fontWeight: 800, color: 'var(--text-h)' }}>{label}</span>
+                    <span style={{ width: '85px', fontWeight: 600, color: 'var(--text-h)' }}>{label}</span>
                     <div style={{ flex: 1, height: '8px', background: 'var(--bg-app)', borderRadius: '99px', margin: '0 10px', overflow: 'hidden' }}>
                       <div style={{ width: `${(count/maxMyTypeCount)*100}%`, height: '100%', background: '#1d4ed8', borderRadius: '99px' }} />
                     </div>
-                    <span style={{ fontWeight: 900, color: 'var(--text-h)' }}>{count}</span>
+                    <span style={{ fontWeight: 600, color: 'var(--text-h)' }}>{count}</span>
                   </div>
                 ))}
               </div>
               <div className="card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem', width: '100%' }}>Resolution Ratio</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem', width: '100%' }}>Resolution Ratio</h3>
                 <div style={{
                   width: '90px',
                   height: '90px',
@@ -1826,11 +1826,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   justifyContent: 'center'
                 }}>
                   <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--bg-card)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 900, color: 'var(--text-h)' }}>{myRaisedTotal}</span>
+                    <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-h)' }}>{myRaisedTotal}</span>
                     <span style={{ fontSize: '0.58rem', color: 'var(--text-muted)' }}>Total</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', fontSize: '0.68rem', marginTop: '1rem', fontWeight: 800 }}>
+                <div style={{ display: 'flex', gap: '8px', fontSize: '0.68rem', marginTop: '1rem', fontWeight: 600 }}>
                   <span style={{ color: '#ea580c' }}>Active ({myRaisedActive})</span>
                   <span style={{ color: '#16a34a' }}>Resolved ({myRaisedClosed})</span>
                 </div>
@@ -1841,7 +1841,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
         {subTab === 'register' && (
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ClipboardList size={18} /> Complaints Registered by {myName}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', padding: '1.5rem' }}>
@@ -1887,7 +1887,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -1901,7 +1901,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -1915,7 +1915,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -1929,7 +1929,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       <div>
                         <h2 style={{
                           fontSize: '1.25rem',
-                          fontWeight: 900,
+                          fontWeight: 600,
                           color: 'var(--text-h)',
                           margin: 0,
                           lineHeight: '1.2',
@@ -1939,7 +1939,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         </h2>
                         <h3 style={{
                           fontSize: '1.1rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           color: 'var(--text-muted)',
                           margin: '2px 0 0 0',
                           textTransform: 'uppercase',
@@ -1980,7 +1980,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                               setSelectedComplaint(c);
                             }}
                             className="btn btn-ghost"
-                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
                           >
                             View
                           </button>
@@ -1991,7 +1991,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                                 setSalesEditComplaint(c);
                               }}
                               className="btn btn-primary"
-                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
                             >
                               Edit
                             </button>
@@ -2001,7 +2001,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                             color: '#ffffff',
                             padding: '2px 8px',
                             borderRadius: '6px',
-                            fontWeight: 900,
+                            fontWeight: 600,
                             fontSize: '0.6rem',
                             textTransform: 'uppercase',
                             marginLeft: '4px'
@@ -2031,13 +2031,13 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
               }}>
                 <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
                   <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 800 }}>Edit Complaint: {salesEditComplaint.complaintNo}</span>
-                    <button onClick={() => setSalesEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                    <span style={{ fontWeight: 600 }}>Edit Complaint: {salesEditComplaint.complaintNo}</span>
+                    <button onClick={() => setSalesEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
                   </div>
                   <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Customer Name *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Customer Name *</label>
                         <input 
                           type="text" 
                           value={salesEditComplaint.customerName || ''} 
@@ -2046,7 +2046,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         />
                       </div>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Invoice No *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Invoice No *</label>
                         <input 
                           type="text" 
                           value={salesEditComplaint.invoiceNo || ''} 
@@ -2058,7 +2058,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Customer Contact *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Customer Contact *</label>
                         <input 
                           type="text" 
                           value={salesEditComplaint.customerContact || ''} 
@@ -2067,7 +2067,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         />
                       </div>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Assigned To</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Assigned To</label>
                         <select 
                           value={salesEditComplaint.assignedTo || 'Jawahir'} 
                           onChange={e => setSalesEditComplaint(p => ({ ...p, assignedTo: e.target.value }))}
@@ -2080,7 +2080,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Complaint Type *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Complaint Type *</label>
                         <select 
                           value={salesEditComplaint.complaintType || 'Production'} 
                           onChange={e => setSalesEditComplaint(p => ({ ...p, complaintType: e.target.value }))}
@@ -2093,7 +2093,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         </select>
                       </div>
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Severity *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Severity *</label>
                         <select 
                           value={salesEditComplaint.severity || 'Medium'} 
                           onChange={e => setSalesEditComplaint(p => ({ ...p, severity: e.target.value }))}
@@ -2108,7 +2108,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     </div>
 
                     <div className="form-field">
-                      <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Status *</label>
+                      <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Status *</label>
                       <select 
                         value={salesEditComplaint.status || 'Open'} 
                         onChange={e => setSalesEditComplaint(p => ({ ...p, status: e.target.value }))}
@@ -2121,7 +2121,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     </div>
 
                     <div className="form-field">
-                      <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Problem Description *</label>
+                      <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Problem Description *</label>
                       <textarea 
                         rows="3"
                         value={salesEditComplaint.description || ''} 
@@ -2131,8 +2131,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                      <button onClick={() => setSalesEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 800 }}>Cancel</button>
-                      <button onClick={handleSalesEditSave} className="btn btn-primary" style={{ padding: '8px 24px', fontWeight: 800 }}>Save Changes</button>
+                      <button onClick={() => setSalesEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 600 }}>Cancel</button>
+                      <button onClick={handleSalesEditSave} className="btn btn-primary" style={{ padding: '8px 24px', fontWeight: 600 }}>Save Changes</button>
                     </div>
                   </div>
                 </div>
@@ -2164,41 +2164,41 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 }}>
                   <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
-                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                      <span style={{ fontWeight: 600 }}>Complaint Details: {c.complaintNo}</span>
+                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
                     </div>
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised Date</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised By</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
                         </div>
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Customer Name</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Assigned To</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
                         </div>
                       </div>
 
                       <div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Problem Description</div>
                         <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
                           {c.description}
                         </div>
                       </div>
 
                       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
                         
                         {isResolved ? (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
@@ -2231,7 +2231,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
+                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 600 }}>Close Details</button>
                       </div>
                     </div>
                   </div>
@@ -2244,13 +2244,13 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         {subTab === 'form' && (
           <div style={{ width: '100%' }}>
             <div className="card" style={{ padding: '2rem' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <ClipboardList size={22} style={{ color: 'var(--navy)' }} /> Raise New Customer Complaint
               </h2>
               <form onSubmit={e => handleSalesSubmit(e, 'Open')} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Complaint Date *</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Complaint Date *</label>
                     <input 
                       type="date" 
                       value={salesFormData.complaintDate} 
@@ -2260,7 +2260,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     />
                   </div>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Complaint Number</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Complaint Number</label>
                     <input 
                       type="text" 
                       value={salesFormData.complaintNo} 
@@ -2273,7 +2273,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Raised By</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Raised By</label>
                     <input 
                       type="text" 
                       value={salesFormData.raisedBy} 
@@ -2282,7 +2282,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     />
                   </div>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Assigned To *</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Assigned To *</label>
                     <select
                       value={salesFormData.assignedTo}
                       onChange={e => setSalesFormData(p => ({ ...p, assignedTo: e.target.value }))}
@@ -2295,7 +2295,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 </div>
 
                 <div className="form-field">
-                  <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Customer Name *</label>
+                  <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Customer Name *</label>
                   <input 
                     type="text" 
                     value={salesFormData.customerName} 
@@ -2308,7 +2308,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Invoice Number (Optional)</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Invoice Number (Optional)</label>
                     <input 
                       type="text" 
                       value={salesFormData.invoiceNo} 
@@ -2318,7 +2318,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     />
                   </div>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Customer Number *</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Customer Number *</label>
                     <input 
                       type="text" 
                       value={salesFormData.customerContact} 
@@ -2332,7 +2332,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Complaint Type *</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Complaint Type *</label>
                     <select 
                       value={salesFormData.complaintType} 
                       onChange={e => {
@@ -2350,7 +2350,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     </select>
                   </div>
                   <div className="form-field">
-                    <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Severity *</label>
+                    <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Severity *</label>
                     <select 
                       value={salesFormData.severity} 
                       onChange={e => setSalesFormData(p => ({ ...p, severity: e.target.value }))} 
@@ -2366,7 +2366,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 </div>
 
                 <div className="form-field">
-                  <label style={{ fontWeight: 800, fontSize: '0.78rem' }}>Complaint Description *</label>
+                  <label style={{ fontWeight: 600, fontSize: '0.78rem' }}>Complaint Description *</label>
                   <textarea 
                     value={salesFormData.description} 
                     onChange={e => setSalesFormData(p => ({ ...p, description: e.target.value }))} 
@@ -2382,14 +2382,14 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     type="button" 
                     onClick={e => handleSalesSubmit(e, 'Draft')}
                     className="btn btn-ghost" 
-                    style={{ flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    style={{ flex: 1, padding: '10px', fontWeight: 600, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                   >
                     <Save size={16} /> Save as Draft
                   </button>
                   <button 
                     type="submit" 
                     className="btn btn-primary" 
-                    style={{ flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    style={{ flex: 1, padding: '10px', fontWeight: 600, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                   >
                     <Send size={16} /> Submit Complaint
                   </button>
@@ -2434,7 +2434,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
               }}>
                 <ClipboardList size={24} />
               </div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.5rem' }}>
                 {salesConfirm.status === 'Draft' ? 'Save as Draft?' : 'Submit Complaint?'}
               </h3>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-sub)', marginBottom: '1.5rem', lineHeight: '1.4' }}>
@@ -2484,7 +2484,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             <button 
               onClick={handleDownloadExcel}
               className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 600 }}
             >
               <Download size={14} /> Export to Excel
             </button>
@@ -2519,13 +2519,13 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             {/* ASSIGNED COMPLAINT TYPE RATIO */}
             <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1.25rem' }}>
               <div className="card" style={{ padding: '1.25rem' }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem' }}>Active Tasks Priority</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem' }}>Active Tasks Priority</h3>
                 {myComplaints.filter(c => c.status !== 'Resolved' && c.status !== 'Closed').length === 0 ? (
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>No active backlog tasks.</div>
                 ) : (
                   myComplaints.filter(c => c.status !== 'Resolved' && c.status !== 'Closed').map((c, i) => (
                     <div key={i} onClick={() => { setSelectedComplaint(c); setSubTab('register'); }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}>
-                      <span className="cell-mono" style={{ fontSize: '0.78rem', fontWeight: 800, color: '#1d4ed8' }}>{c.complaintNo}</span>
+                      <span className="cell-mono" style={{ fontSize: '0.78rem', fontWeight: 600, color: '#1d4ed8' }}>{c.complaintNo}</span>
                       <span style={{ fontSize: '0.78rem', color: 'var(--text-h)', flex: 1, marginLeft: '1.5rem' }}>{c.customerName}</span>
                       <span className={`badge ${['Showstopper', 'Blocker', 'Critical'].includes(c.severity) ? 'badge-critical' : 'badge-attention'}`} style={{ fontSize: '0.62rem' }}>{c.severity}</span>
                     </div>
@@ -2533,7 +2533,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 )}
               </div>
               <div className="card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem', width: '100%' }}>Task Status Split</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem', width: '100%' }}>Task Status Split</h3>
                 <div style={{
                   width: '90px',
                   height: '90px',
@@ -2544,11 +2544,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   justifyContent: 'center'
                 }}>
                   <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--bg-card)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 900, color: 'var(--text-h)' }}>{myTotalCount}</span>
+                    <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-h)' }}>{myTotalCount}</span>
                     <span style={{ fontSize: '0.58rem', color: 'var(--text-muted)' }}>Assigned</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', fontSize: '0.68rem', marginTop: '1rem', fontWeight: 800 }}>
+                <div style={{ display: 'flex', gap: '8px', fontSize: '0.68rem', marginTop: '1rem', fontWeight: 600 }}>
                   <span style={{ color: '#ea580c' }}>Active ({myActiveCount})</span>
                   <span style={{ color: '#16a34a' }}>Resolved ({myClosedCount})</span>
                 </div>
@@ -2602,7 +2602,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -2616,7 +2616,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -2630,7 +2630,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           padding: '4px 10px',
                           borderRadius: '99px',
                           fontSize: '0.68rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           border: '1px solid var(--border)',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -2644,7 +2644,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       <div>
                         <h2 style={{
                           fontSize: '1.25rem',
-                          fontWeight: 900,
+                          fontWeight: 600,
                           color: 'var(--text-h)',
                           margin: 0,
                           lineHeight: '1.2',
@@ -2654,7 +2654,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         </h2>
                         <h3 style={{
                           fontSize: '1.1rem',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           color: 'var(--text-muted)',
                           margin: '2px 0 0 0',
                           textTransform: 'uppercase',
@@ -2695,7 +2695,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                               setSelectedComplaint(c);
                             }}
                             className="btn btn-ghost"
-                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
                           >
                             View
                           </button>
@@ -2706,7 +2706,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                                 setProdEditComplaint(c);
                               }}
                               className="btn btn-primary"
-                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px' }}
                             >
                               Edit
                             </button>
@@ -2716,7 +2716,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                             color: '#ffffff',
                             padding: '2px 8px',
                             borderRadius: '6px',
-                            fontWeight: 900,
+                            fontWeight: 600,
                             fontSize: '0.6rem',
                             textTransform: 'uppercase',
                             marginLeft: '4px'
@@ -2756,23 +2756,23 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 }}>
                   <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 800 }}>Manage Task: {c.complaintNo}</span>
-                      <button onClick={() => setProdEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                      <span style={{ fontWeight: 600 }}>Manage Task: {c.complaintNo}</span>
+                      <button onClick={() => setProdEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
                     </div>
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer</div>
-                        <div style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-h)' }}>{c.customerName}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Customer</div>
+                        <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-h)' }}>{c.customerName}</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Problem Description</div>
                         <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '8px 12px', borderRadius: '6px', marginTop: '4px', border: '1px solid var(--border)' }}>
                           {c.description}
                         </div>
                       </div>
 
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Update Status *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Update Status *</label>
                         <select 
                           value={currentStatus} 
                           onChange={e => handleProdFieldChange(c.complaintNo, 'status', e.target.value)}
@@ -2787,7 +2787,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Root Cause Details *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Root Cause Details *</label>
                         <input 
                           type="text" 
                           value={currentRootCause || ''} 
@@ -2798,7 +2798,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div className="form-field">
-                        <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Corrective Action *</label>
+                        <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>Corrective Action *</label>
                         <input 
                           type="text" 
                           value={currentCorrective || ''} 
@@ -2809,7 +2809,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                        <button onClick={() => setProdEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 800 }}>Cancel</button>
+                        <button onClick={() => setProdEditComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 16px', fontWeight: 600 }}>Cancel</button>
                         <button 
                           onClick={async () => {
                             await handleProdSave(c.complaintNo, c);
@@ -2817,7 +2817,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           }} 
                           className="btn btn-primary" 
                           disabled={!hasChanges}
-                          style={{ padding: '8px 24px', fontWeight: 800, opacity: hasChanges ? 1 : 0.5 }}
+                          style={{ padding: '8px 24px', fontWeight: 600, opacity: hasChanges ? 1 : 0.5 }}
                         >
                           Save & Apply
                         </button>
@@ -2854,41 +2854,41 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 }}>
                   <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
-                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                      <span style={{ fontWeight: 600 }}>Complaint Details: {c.complaintNo}</span>
+                      <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
                     </div>
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised Date</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised By</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
                         </div>
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Customer Name</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Assigned To</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
                         </div>
                       </div>
 
                       <div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Problem Description</div>
                         <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
                           {c.description}
                         </div>
                       </div>
 
                       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
                         
                         {isResolved ? (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
@@ -2921,7 +2921,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
+                        <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 600 }}>Close Details</button>
                       </div>
                     </div>
                   </div>
@@ -2976,7 +2976,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
           <button 
             onClick={handleDownloadExcel}
             className="btn btn-primary"
-            style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 800 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', fontSize: '0.78rem', fontWeight: 600 }}
           >
             <Download size={14} /> Export to Excel
           </button>
@@ -3027,11 +3027,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
                 }}>
                   <div style={{ width: '75px', height: '75px', borderRadius: '50%', background: 'var(--bg-card)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-h)', fontFamily: 'Montserrat' }}>{totalCount}</span>
-                    <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 800 }}>Total</span>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-h)', fontFamily: 'Montserrat' }}>{totalCount}</span>
+                    <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '0.72rem', marginTop: '1rem', fontWeight: 800 }}>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '0.72rem', marginTop: '1rem', fontWeight: 600 }}>
                   <span style={{ color: '#ea580c' }}>● Active ({activeCount})</span>
                   <span style={{ color: '#16a34a' }}>● Closed ({closedCount})</span>
                 </div>
@@ -3044,11 +3044,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
               <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', justifyContent: 'center', height: '220px' }}>
                 {Object.entries(typeCounts).map(([label, count]) => (
                   <div key={label} style={{ display: 'flex', alignItems: 'center', justify: 'space-between', fontSize: '0.75rem' }}>
-                    <span style={{ width: '80px', fontWeight: 800, color: 'var(--text-h)' }}>{label}</span>
+                    <span style={{ width: '80px', fontWeight: 600, color: 'var(--text-h)' }}>{label}</span>
                     <div style={{ flex: 1, height: '10px', background: 'var(--bg-app)', borderRadius: '99px', margin: '0 10px', overflow: 'hidden' }}>
                       <div style={{ width: `${(count/maxTypeCount)*100}%`, height: '100%', background: '#1d4ed8', borderRadius: '99px' }} />
                     </div>
-                    <span style={{ fontWeight: 900, color: 'var(--text-h)' }}>{count}</span>
+                    <span style={{ fontWeight: 600, color: 'var(--text-h)' }}>{count}</span>
                   </div>
                 ))}
               </div>
@@ -3060,8 +3060,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
               <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', justifyContent: 'center', height: '220px' }}>
                 {assigneeWorkloads.map((w, i) => (
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: i === 0 ? '1px solid var(--border)' : 'none' }}>
-                    <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#1e3a8a' }}>{w.name}</span>
-                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', fontWeight: 800 }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#1e3a8a' }}>{w.name}</span>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', fontWeight: 600 }}>
                       <span style={{ color: '#ea580c' }}>Active: {w.active}</span>
                       <span style={{ color: '#dc2626' }}>Overdue: {w.overdue}</span>
                     </div>
@@ -3081,9 +3081,9 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 ) : (
                   topOverdueComplaints.map((c, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: i < topOverdueComplaints.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                      <span className="cell-mono" style={{ fontSize: '0.8rem', fontWeight: 900, color: '#1d4ed8' }}>{c.no}</span>
+                      <span className="cell-mono" style={{ fontSize: '0.8rem', fontWeight: 600, color: '#1d4ed8' }}>{c.no}</span>
                       <span style={{ fontSize: '0.8rem', color: 'var(--text-h)', flex: 1, marginLeft: '2rem' }}>{c.name}</span>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 900, color: '#dc2626' }}>{c.days}</span>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#dc2626' }}>{c.days}</span>
                     </div>
                   ))
                 )}
@@ -3107,7 +3107,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         </>
       ) : (
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <LayoutDashboard size={18} /> Customer Complaints Register (Read-only Overview)
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', padding: '1.5rem' }}>
@@ -3153,7 +3153,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         padding: '4px 10px',
                         borderRadius: '99px',
                         fontSize: '0.68rem',
-                        fontWeight: 800,
+                        fontWeight: 600,
                         border: '1px solid var(--border)',
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -3167,7 +3167,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         padding: '4px 10px',
                         borderRadius: '99px',
                         fontSize: '0.68rem',
-                        fontWeight: 800,
+                        fontWeight: 600,
                         border: '1px solid var(--border)',
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -3181,7 +3181,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                         padding: '4px 10px',
                         borderRadius: '99px',
                         fontSize: '0.68rem',
-                        fontWeight: 800,
+                        fontWeight: 600,
                         border: '1px solid var(--border)',
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -3195,7 +3195,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                     <div>
                       <h2 style={{
                         fontSize: '1.25rem',
-                        fontWeight: 900,
+                        fontWeight: 600,
                         color: 'var(--text-h)',
                         margin: 0,
                         lineHeight: '1.2',
@@ -3205,7 +3205,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       </h2>
                       <h3 style={{
                         fontSize: '1.1rem',
-                        fontWeight: 800,
+                        fontWeight: 600,
                         color: 'var(--text-muted)',
                         margin: '2px 0 0 0',
                         textTransform: 'uppercase',
@@ -3246,7 +3246,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                             setSelectedComplaint(c);
                           }}
                           className="btn btn-ghost"
-                          style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                          style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
                         >
                           View
                         </button>
@@ -3255,7 +3255,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           color: '#ffffff',
                           padding: '2px 8px',
                           borderRadius: '6px',
-                          fontWeight: 900,
+                          fontWeight: 600,
                           fontSize: '0.6rem',
                           textTransform: 'uppercase',
                           marginLeft: '4px'
@@ -3299,41 +3299,41 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
           }}>
             <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
               <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
-                <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+                <span style={{ fontWeight: 600 }}>Complaint Details: {c.complaintNo}</span>
+                <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
               </div>
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised Date</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised By</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Customer Name</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Assigned To</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
                   </div>
                 </div>
 
                 <div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Problem Description</div>
                   <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
                     {c.description}
                   </div>
                 </div>
 
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
                   
                   {isResolved ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
@@ -3366,7 +3366,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
-                  <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
+                  <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 600 }}>Close Details</button>
                 </div>
               </div>
             </div>
@@ -3394,7 +3394,7 @@ function HrDashboardTab({ directory }) {
   return (
     <>
       <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>HR Operations Hub</h1>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>HR Operations Hub</h1>
         <p style={{ fontSize: '0.875rem', color: 'var(--text-sub)' }}>Manage employee rosters, attendance tracking, and leave approvals.</p>
       </div>
 
@@ -3403,13 +3403,13 @@ function HrDashboardTab({ directory }) {
       <div className="finexy-grid-3" style={{ gridTemplateColumns: '1.8fr 1.2fr' }}>
         {/* Left: Pending Leaves approvals */}
         <div className="card" style={{ padding: '1.25rem' }}>
-          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem' }}>Pending Leave Applications</div>
+          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem' }}>Pending Leave Applications</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {leaves.map(l => (
               <div key={l.id} style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-h)' }}>{l.name}</span>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-h)' }}>{l.name}</span>
                     <span className="badge" style={{ fontSize: '0.6rem', padding: '1px 6px', background: 'var(--bg-app)', color: 'var(--text-sub)' }}>{l.dept}</span>
                   </div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)', marginTop: '4px' }}>
@@ -3418,8 +3418,8 @@ function HrDashboardTab({ directory }) {
                   <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>Dates: {l.date}</div>
                 </div>
                 <div style={{ display: 'flex', gap: '6px' }}>
-                  <button onClick={() => handleAction(l.id, 'approve')} className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.72rem', fontWeight: 800 }}>Approve</button>
-                  <button onClick={() => handleAction(l.id, 'reject')} className="btn btn-danger" style={{ padding: '6px 12px', fontSize: '0.72rem', fontWeight: 800 }}>Reject</button>
+                  <button onClick={() => handleAction(l.id, 'approve')} className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.72rem', fontWeight: 600 }}>Approve</button>
+                  <button onClick={() => handleAction(l.id, 'reject')} className="btn btn-danger" style={{ padding: '6px 12px', fontSize: '0.72rem', fontWeight: 600 }}>Reject</button>
                 </div>
               </div>
             ))}
@@ -3431,12 +3431,12 @@ function HrDashboardTab({ directory }) {
 
         {/* Right: Directory Snapshot */}
         <div className="card" style={{ padding: '1.25rem' }}>
-          <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '1rem' }}>Employee Roster Summary</div>
+          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '1rem' }}>Employee Roster Summary</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {(directory || []).slice(0, 5).map((e, idx) => (
               <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '8px', borderBottom: '1px solid var(--bg-app)' }}>
                 <div>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-h)' }}>{e.name}</div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-h)' }}>{e.name}</div>
                   <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>{e.department?.toUpperCase()}</div>
                 </div>
                 <span className="badge" style={{ 
@@ -3462,7 +3462,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
     <>
       {/* Greeting Title */}
       <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>Good morning, {userName || 'Velmurugan Rathinam'}</h1>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>Good morning, {userName || 'Velmurugan Rathinam'}</h1>
         <p style={{ fontSize: '0.875rem', color: 'var(--text-sub)' }}>Stay on top of your tasks, monitor progress, and track status.</p>
       </div>
 
@@ -3473,7 +3473,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div className="card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '135px' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Quick Actions</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.25rem' }}>Quick Actions</div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-sub)' }}>Access approvals and procurement overrides</div>
             </div>
             
@@ -3597,10 +3597,10 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
           <div className="card" style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
               <div>
-                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)' }}>Pending BOMs (Overdue &gt; 7 Days)</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)' }}>Pending BOMs (Overdue &gt; 7 Days)</span>
                 <div style={{ fontSize: '0.68rem', color: 'var(--text-sub)', marginTop: '2px' }}>Critical alerts for unreleased bill of materials</div>
               </div>
-              <span className="badge badge-critical" style={{ fontSize: '0.62rem', fontWeight: 800 }}>3 Critical Alerts</span>
+              <span className="badge badge-critical" style={{ fontSize: '0.62rem', fontWeight: 600 }}>3 Critical Alerts</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -3612,17 +3612,17 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                 <div key={idx} style={{ padding: '0.875rem', background: 'var(--bg-app)', border: '1px solid var(--border)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-h)' }}>{bom.id}</span>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-h)' }}>{bom.id}</span>
                       <span className="badge badge-critical" style={{ fontSize: '0.55rem', padding: '1px 4px' }}>⚠️ Critical</span>
                     </div>
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-body)', fontWeight: 700, marginTop: '2px' }}>{bom.name}</div>
                     <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '2px' }}>Dept: {bom.dept} • Code: {bom.itemCode}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--red)', fontWeight: 800 }}>{bom.days}</div>
+                    <div style={{ fontSize: '0.68rem', color: 'var(--red)', fontWeight: 600 }}>{bom.days}</div>
                     <button 
                       onClick={() => alert(`Clearing BOM for ${bom.id}`)}
-                      style={{ marginTop: '6px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '6px', padding: '2px 8px', fontSize: '0.65rem', fontWeight: 800, cursor: 'pointer', color: 'var(--text-body)' }}
+                      style={{ marginTop: '6px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '6px', padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer', color: 'var(--text-body)' }}
                     >
                       Clear
                     </button>
@@ -3636,10 +3636,10 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
           <div className="card" style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div>
-                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)' }}>Overdue Customer Credits</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)' }}>Overdue Customer Credits</span>
                 <div style={{ fontSize: '0.68rem', color: 'var(--text-sub)', marginTop: '2px' }}>Customers who missed their credit payment deadline</div>
               </div>
-              <span className="badge badge-critical" style={{ fontSize: '0.62rem', fontWeight: 800 }}>2 Overdue</span>
+              <span className="badge badge-critical" style={{ fontSize: '0.62rem', fontWeight: 600 }}>2 Overdue</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -3649,12 +3649,12 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
               ].map((credit, idx) => (
                 <div key={idx} style={{ padding: '0.875rem', background: 'var(--bg-app)', border: '1px solid var(--border)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <div style={{ fontWeight: 800, color: 'var(--text-h)', fontSize: '0.78rem' }}>{credit.customer}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-h)', fontSize: '0.78rem' }}>{credit.customer}</div>
                     <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>Deadline: {credit.deadline} • Terms: Net 30</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-h)' }}>{credit.amount}</div>
-                    <div style={{ fontSize: '0.65rem', color: 'var(--red)', fontWeight: 800, marginTop: '2px' }}>{credit.overdue}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 600, color: 'var(--text-h)' }}>{credit.amount}</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--red)', fontWeight: 600, marginTop: '2px' }}>{credit.overdue}</div>
                   </div>
                 </div>
               ))}
@@ -3665,10 +3665,10 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
           <div className="card" style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div>
-                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)' }}>Weekly Cancelled Documents (Sales Team)</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)' }}>Weekly Cancelled Documents (Sales Team)</span>
                 <div style={{ fontSize: '0.68rem', color: 'var(--text-sub)', marginTop: '2px' }}>Tracked BOMs & Invoices cancelled this week</div>
               </div>
-              <span className="badge badge-attention" style={{ fontSize: '0.62rem', fontWeight: 800 }}>2 Cancelled</span>
+              <span className="badge badge-attention" style={{ fontSize: '0.62rem', fontWeight: 600 }}>2 Cancelled</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -3679,14 +3679,14 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                 <div key={idx} style={{ padding: '0.875rem', background: 'var(--bg-app)', border: '1px solid var(--border)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-h)' }}>{doc.id} ({doc.type})</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-h)' }}>{doc.id} ({doc.type})</span>
                       <span className="badge badge-attention" style={{ fontSize: '0.55rem', padding: '1px 4px' }}>Cancelled</span>
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-body)', fontWeight: 700, marginTop: '4px' }}>By: {doc.salesExec} • {doc.time}</div>
                     <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '2px' }}>Reason: {doc.reason}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-muted)', textDecoration: 'line-through' }}>{doc.value}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 600, color: 'var(--text-muted)', textDecoration: 'line-through' }}>{doc.value}</div>
                   </div>
                 </div>
               ))}
@@ -3701,7 +3701,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
           {/* Delayed Orders Table */}
           <div className="card card-table-container" style={{ width: '100%' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem 0.75rem' }}>
-              <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-h)' }}>Recent Activities</span>
+              <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-h)' }}>Recent Activities</span>
               <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center' }}>
                 <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                   <Search size={13} style={{ position: 'absolute', left: 10, color: 'var(--text-sub)' }} />
@@ -3771,7 +3771,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                           {o.status === 'Critical' ? 'Critical' : o.status === 'High' ? 'Private' : 'Public'}
                         </span>
                       </td>
-                      <td className="cell-mono" style={{ fontWeight: 800, fontSize: '0.82rem' }}>{o.value}</td>
+                      <td className="cell-mono" style={{ fontWeight: 600, fontSize: '0.82rem' }}>{o.value}</td>
                       <td style={{ textAlign: 'right', paddingRight: '2rem' }} onClick={e => e.stopPropagation()}>
                         <button className="table-icon-btn"><MoreVertical size={14} /></button>
                       </td>
@@ -3800,10 +3800,10 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
           <div className="card" style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div>
-                <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)' }}>Upcoming Vendor Payments (Deadline &lt; 7 Days)</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)' }}>Upcoming Vendor Payments (Deadline &lt; 7 Days)</span>
                 <div style={{ fontSize: '0.68rem', color: 'var(--text-sub)', marginTop: '2px' }}>Track upcoming credit deadlines and partial payments</div>
               </div>
-              <span className="badge badge-attention" style={{ fontSize: '0.62rem', fontWeight: 800 }}>2 Upcoming</span>
+              <span className="badge badge-attention" style={{ fontSize: '0.62rem', fontWeight: 600 }}>2 Upcoming</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -3813,7 +3813,7 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
               ].map((pay, idx) => (
                 <div key={idx} style={{ padding: '0.875rem', background: 'var(--bg-app)', border: '1px solid var(--border)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <div style={{ fontWeight: 800, color: 'var(--text-h)', fontSize: '0.78rem' }}>{pay.vendor}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-h)', fontSize: '0.78rem' }}>{pay.vendor}</div>
                     <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                       Deadline: {pay.deadline} • Total PO: <strong style={{ color: 'var(--text-h)' }}>{pay.total}</strong>
                     </div>
@@ -3822,8 +3822,8 @@ function OverviewTab({ onDrill, onAlertClick, setDrawerOpen, setActiveTab, userN
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 900, color: 'var(--text-h)' }}>Pending: {pay.pending}</div>
-                    <div style={{ fontSize: '0.65rem', color: 'var(--amber)', fontWeight: 800, marginTop: '4px' }}>⚠️ {pay.daysLeft}</div>
+                    <div style={{ fontSize: '0.82rem', fontFamily: 'Montserrat', fontWeight: 600, color: 'var(--text-h)' }}>Pending: {pay.pending}</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--amber)', fontWeight: 600, marginTop: '4px' }}>⚠️ {pay.daysLeft}</div>
                   </div>
                 </div>
               ))}
@@ -3898,7 +3898,7 @@ function OperationsTab({ onDrill }) {
                       </div>
                     </td>
                     <td style={{ fontSize: '0.85rem', color: 'var(--text-body)' }}>{o.reason}</td>
-                    <td className="cell-mono" style={{ fontWeight: 800, fontSize: '0.88rem' }}>{o.value}</td>
+                    <td className="cell-mono" style={{ fontWeight: 600, fontSize: '0.88rem' }}>{o.value}</td>
                     <td>
                       <span className={`badge ${o.delayDays >= 10 ? 'badge-critical' : o.delayDays >= 5 ? 'badge-attention' : 'badge-navy'}`} style={{ fontSize: '0.78rem' }}>
                         {o.delayDays} days
@@ -4035,15 +4035,15 @@ function FinanceTab({ onDrill }) {
           <div className="card-hd" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: 'none', paddingBottom: '0.25rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MapPin size={16} style={{ color: 'var(--red)', marginTop: '-2px' }} />
-              <span className="card-title" style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--text-h)', letterSpacing: '-0.01em' }}>Expense Distribution — July 2025</span>
+              <span className="card-title" style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--text-h)', letterSpacing: '-0.01em' }}>Expense Distribution — July 2025</span>
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800 }}>Cr, INR Spend</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Cr, INR Spend</div>
           </div>
           <div className="donut-wrap" style={{ display: 'flex', gap: '2rem', padding: '0.75rem 2.25rem 2rem', alignItems: 'center', minHeight: '280px' }}>
             <div style={{ flex: 1.1, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
                 <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 700 }}>Total spend</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--text-h)', marginTop: '2px', fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}>64,9 Cr</div>
+                <div style={{ fontSize: '2.5rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px', fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}>64,9 Cr</div>
               </div>
               <div className="donut-legend" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%' }}>
                 {MOCK.expenses.map((e, i) => (
@@ -4102,7 +4102,7 @@ function FinanceTab({ onDrill }) {
                       </div>
                     </div>
                   </td>
-                  <td className="cell-mono" style={{ fontWeight: 800, fontSize: '0.88rem' }}>{r.cur}</td>
+                  <td className="cell-mono" style={{ fontWeight: 600, fontSize: '0.88rem' }}>{r.cur}</td>
                   <td className="cell-mono" style={{ color: 'var(--text-sub)', fontSize: '0.88rem' }}>{r.prev}</td>
                   <td className="cell-mono" style={{ color: 'var(--text-sub)', fontSize: '0.88rem' }}>{r.ytd}</td>
                   <td className="cell-mono" style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>{r.target || '—'}</td>
@@ -4277,7 +4277,7 @@ function PurchaseTab({ onDrill }) {
                           </div>
                         </div>
                       </td>
-                      <td className="cell-mono" style={{ fontWeight: 800, fontSize: '0.88rem' }}>{v.poValue}</td>
+                      <td className="cell-mono" style={{ fontWeight: 600, fontSize: '0.88rem' }}>{v.poValue}</td>
                       <td>
                         <span className={`badge ${parseFloat(v.onTime) >= 90 ? 'badge-completed' : parseFloat(v.onTime) >= 80 ? 'badge-attention' : 'badge-critical'}`} style={{ fontSize: '0.78rem' }}>
                           {v.onTime}
@@ -4416,7 +4416,7 @@ function InventoryTab({ onDrill }) {
                       <span className="badge badge-navy" style={{ fontSize: '0.78rem', textTransform: 'none' }}>{item.category}</span>
                     </td>
                     <td>
-                      <span style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '0.88rem', color: item.status === 'Critical' ? 'var(--red)' : item.status === 'Low' ? 'var(--amber)' : 'var(--green)' }}>
+                      <span style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '0.88rem', color: item.status === 'Critical' ? 'var(--red)' : item.status === 'Low' ? 'var(--amber)' : 'var(--green)' }}>
                         {item.qty} {item.unit}
                       </span>
                     </td>
@@ -4670,11 +4670,11 @@ function EmployeeTab({ onDrill }) {
         padding: '4px 8px',
         boxShadow: 'var(--shadow-sm)'
       }}>
-        <button className="table-icon-btn" onClick={zoomOut} title="Zoom Out" style={{ padding: '4px 8px', fontWeight: 800 }}>-</button>
+        <button className="table-icon-btn" onClick={zoomOut} title="Zoom Out" style={{ padding: '4px 8px', fontWeight: 600 }}>-</button>
         <span style={{ fontSize: '0.78rem', fontWeight: 700, display: 'flex', alignItems: 'center', minWidth: '40px', justifyContent: 'center' }}>
           {Math.round(scale * 100)}%
         </span>
-        <button className="table-icon-btn" onClick={zoomIn} title="Zoom In" style={{ padding: '4px 8px', fontWeight: 800 }}>+</button>
+        <button className="table-icon-btn" onClick={zoomIn} title="Zoom In" style={{ padding: '4px 8px', fontWeight: 600 }}>+</button>
         <button className="table-icon-btn" onClick={resetZoom} title="Reset Zoom" style={{ fontSize: '0.72rem', padding: '4px 8px', fontWeight: 700 }}>Reset</button>
       </div>
 
@@ -4729,8 +4729,8 @@ function EmployeeTab({ onDrill }) {
               boxShadow: 'var(--shadow-md)'
             }}
           >
-            <div style={{ fontWeight: 800, color: 'var(--text-h)', fontSize: '0.85rem' }}>Velmurugan Rathinam</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--accent)', fontWeight: 800, marginTop: '2px' }}>Managing Director</div>
+            <div style={{ fontWeight: 600, color: 'var(--text-h)', fontSize: '0.85rem' }}>Velmurugan Rathinam</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--accent)', fontWeight: 600, marginTop: '2px' }}>Managing Director</div>
           </div>
 
           {/* LEVEL 2: HOD NODES */}
@@ -5010,7 +5010,7 @@ function AttendanceTab() {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Icon size={16} style={{ color: c.color }} />
                   </div>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-h)' }}>{c.title}</span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-h)' }}>{c.title}</span>
                 </div>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>&gt;</span>
               </div>
@@ -5019,8 +5019,8 @@ function AttendanceTab() {
               <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>{c.label}</div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px', marginTop: '2px' }}>
-                  <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)' }}>{c.unit}</span>
+                  <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 600, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>{c.unit}</span>
                 </div>
               </div>
 
@@ -5030,7 +5030,7 @@ function AttendanceTab() {
                   <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                     {/* Guide line */}
                     <div style={{ position: 'absolute', top: '35%', left: 0, right: 0, height: '1px', borderTop: '1px dashed #e2e8f0', zIndex: 1 }} />
-                    <span style={{ position: 'absolute', top: '18%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)', zIndex: 2 }}>{c.guide}</span>
+                    <span style={{ position: 'absolute', top: '18%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)', zIndex: 2 }}>{c.guide}</span>
                     
                     {/* Bar list */}
                     <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', width: '100%', paddingLeft: '32px' }}>
@@ -5058,8 +5058,8 @@ function AttendanceTab() {
                     {/* Guide lines */}
                     <div style={{ position: 'absolute', top: '20%', left: 0, right: 0, height: '1px', borderTop: '1px solid #f1f5f9' }} />
                     <div style={{ position: 'absolute', bottom: '20%', left: 0, right: 0, height: '1px', borderTop: '1px solid #f1f5f9' }} />
-                    <span style={{ position: 'absolute', top: '5%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)' }}>30</span>
-                    <span style={{ position: 'absolute', bottom: '5%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)' }}>15</span>
+                    <span style={{ position: 'absolute', top: '5%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)' }}>30</span>
+                    <span style={{ position: 'absolute', bottom: '5%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)' }}>15</span>
 
                     {/* SVG Line path */}
                     <div style={{ width: '100%', height: '100%', paddingLeft: '24px', position: 'relative' }}>
@@ -5089,7 +5089,7 @@ function AttendanceTab() {
 
               {/* Bottom timeframe selector layout */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0.625rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.5rem' }}>
-                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800 }}>
+                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                   {['Week', 'Month', 'Year'].map(tf => {
                     const active = timeframe[c.key] === tf;
                     return (
@@ -5104,7 +5104,7 @@ function AttendanceTab() {
                           color: active ? '#ffffff' : 'var(--text-muted)',
                           borderRadius: '99px',
                           padding: '2px 8px',
-                          fontWeight: 900,
+                          fontWeight: 600,
                           cursor: 'pointer'
                         }}
                       >
@@ -5992,7 +5992,7 @@ export default function App() {
                       <span className={`badge ${a.priority === 'Critical' ? 'badge-critical' : a.priority === 'High' ? 'badge-attention' : 'badge-navy'}`} style={{ fontSize: '0.58rem', padding: '1px 5px' }}>{a.priority}</span>
                       <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{a.time}</span>
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--text-body)', fontWeight: 800, lineHeight: 1.3 }}>{a.title}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-body)', fontWeight: 600, lineHeight: 1.3 }}>{a.title}</div>
                     <div style={{ fontSize: '0.68rem', color: 'var(--text-sub)', marginTop: 4 }}>Dept: {a.dept}</div>
                   </div>
                 ))}
@@ -6126,7 +6126,7 @@ export default function App() {
       <main className="page-content">
         {activeTab === 'employee_dashboard' && (
           <div style={{ paddingTop: '1.25rem', marginBottom: '1rem' }}>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>Welcome back, Sanjai Kumar</h1>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-h)', marginBottom: '0.2rem', letterSpacing: '-0.02em' }}>Welcome back, Sanjai Kumar</h1>
             <p style={{ fontSize: '0.875rem', color: 'var(--text-sub)' }}>Sales Employee · Department of SALES</p>
           </div>
         )}
@@ -6233,7 +6233,7 @@ export default function App() {
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <Icon size={16} style={{ color: c.color }} />
                         </div>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-h)' }}>{c.title}</span>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-h)' }}>{c.title}</span>
                       </div>
                     </div>
 
@@ -6241,8 +6241,8 @@ export default function App() {
                     <div style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>{c.label}</div>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px', marginTop: '2px' }}>
-                        <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 900, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
-                        <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)' }}>{c.unit}</span>
+                        <span style={{ fontFamily: 'Montserrat', fontSize: '1.85rem', fontWeight: 600, color: 'var(--text-h)', letterSpacing: '-0.02em', lineHeight: 1 }}>{c.val}</span>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>{c.unit}</span>
                       </div>
                     </div>
 
@@ -6251,7 +6251,7 @@ export default function App() {
                       {c.type === 'bar' ? (
                         <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                           <div style={{ position: 'absolute', top: '35%', left: 0, right: 0, height: '1px', borderTop: '1px dashed #e2e8f0', zIndex: 1 }} />
-                          <span style={{ position: 'absolute', top: '18%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)', zIndex: 2 }}>{c.guide}</span>
+                          <span style={{ position: 'absolute', top: '18%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)', zIndex: 2 }}>{c.guide}</span>
                           
                           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', width: '100%', paddingLeft: '32px' }}>
                             {c.data.map((val, idx) => {
@@ -6282,8 +6282,8 @@ export default function App() {
                             const maxVal = Math.max(...c.data);
                             return (
                               <>
-                                <span style={{ position: 'absolute', top: '5%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)' }}>{Math.round(maxVal)}</span>
-                                <span style={{ position: 'absolute', bottom: '5%', left: 0, fontSize: '0.62rem', fontWeight: 800, color: 'var(--text-muted)' }}>{Math.round(minVal)}</span>
+                                <span style={{ position: 'absolute', top: '5%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)' }}>{Math.round(maxVal)}</span>
+                                <span style={{ position: 'absolute', bottom: '5%', left: 0, fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-muted)' }}>{Math.round(minVal)}</span>
                               </>
                             );
                           })()}
@@ -6317,7 +6317,7 @@ export default function App() {
 
                     {/* Bottom timeframe selector layout */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0.625rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.5rem' }}>
-                      <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800 }}>
+                      <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                         {['Week', 'Month', 'Year'].map(tf => {
                           const active = kpiTimeframe[c.key] === tf;
                           return (
@@ -6332,7 +6332,7 @@ export default function App() {
                                 color: active ? '#ffffff' : 'var(--text-muted)',
                                 borderRadius: '99px',
                                 padding: '2px 8px',
-                                fontWeight: 900,
+                                fontWeight: 600,
                                 cursor: 'pointer'
                               }}
                             >
@@ -6439,7 +6439,7 @@ export default function App() {
                 { l: 'Headcount', v: drillData.hc },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: s.c ? `var(--${s.c})` : 'var(--text-h)' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '1.5rem', color: s.c ? `var(--${s.c})` : 'var(--text-h)' }}>{s.v}</div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
@@ -6468,7 +6468,7 @@ export default function App() {
               ].map((s, i) => (
                 <div key={i} style={{ padding: '0.875rem', background: 'var(--bg-app)', borderRadius: 10 }}>
                   <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>{s.l}</div>
-                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, color: 'var(--text-h)', fontSize: '0.9rem' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 600, color: 'var(--text-h)', fontSize: '0.9rem' }}>{s.v}</div>
                 </div>
               ))}
             </div>
@@ -6490,7 +6490,7 @@ export default function App() {
                 { l: 'Quality',      v: drillData.qual  ? `${drillData.qual}%`  : '—', c: 'navy' },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: `var(--${s.c})` }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '1.5rem', color: `var(--${s.c})` }}>{s.v}</div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
@@ -6514,7 +6514,7 @@ export default function App() {
                 { l: 'Target', v: drillData.target !== null ? `${drillData.target}${typeof drillData.target === 'number' && drillData.target <= 100 ? '%' : ''}` : 'N/A' },
               ].map((s, i) => (
                 <div key={i} style={{ padding: '1rem', background: 'var(--bg-app)', borderRadius: 10, textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'Montserrat', fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-h)' }}>{s.v}</div>
+                  <div style={{ fontFamily: 'Montserrat', fontWeight: 600, fontSize: '1.5rem', color: 'var(--text-h)' }}>{s.v}</div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.l}</div>
                 </div>
               ))}
