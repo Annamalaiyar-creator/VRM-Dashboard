@@ -41,7 +41,7 @@ import {
   Send
 } from 'lucide-react';
 
-const API = 'http://localhost:5001/api';
+const API = 'https://vrm-dashboard-72t8.onrender.com/api';
 const CEO_EMAIL    = 'executive@workhub.com';
 const CEO_PASSWORD = 'password';
 
