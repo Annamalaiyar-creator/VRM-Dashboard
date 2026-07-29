@@ -303,23 +303,7 @@ async function initDb() {
     );
 
     // Seed default complaints
-    const defaultComplaints = [
-        { complaintNo: 'CMP-260709-004', complaintDate: '09-Jul', customerName: 'Vetri Solar', complaintType: 'Production', severity: 'Showstopper', assignedTo: 'Jawahir', status: 'In Progress', slaStatus: 'Overdue', ageing: '15' },
-        { complaintNo: 'CMP-260712-005', complaintDate: '12-Jul', customerName: 'BlueRay Solar', complaintType: 'Dipping', severity: 'Blocker', assignedTo: 'Purusothaman', status: 'Waiting Internal', slaStatus: 'Overdue', ageing: '12' },
-        { complaintNo: 'CMP-260720-008', complaintDate: '20-Jul', customerName: 'EcoSpark EPC', complaintType: 'Quality', severity: 'Critical', assignedTo: 'Jawahir', status: 'In Progress', slaStatus: 'Overdue', ageing: '4' },
-        { complaintNo: 'CMP-260723-009', complaintDate: '23-Jul', customerName: 'Nova Green', complaintType: 'Quantity', severity: 'Medium', assignedTo: 'Purusothaman', status: 'Waiting Customer', slaStatus: 'Within SLA', ageing: '1' },
-        { complaintNo: 'CMP-260714-006', complaintDate: '14-Jul', customerName: 'Kaveri Power', complaintType: 'Availability', severity: 'High', assignedTo: 'Jawahir', status: 'Resolved', slaStatus: 'Closed', ageing: '4' }
-    ];
-
-    for (const c of defaultComplaints) {
-        await db.run(
-            `INSERT INTO complaints (
-                complaint_no, complaint_date, customer_name, complaint_type, severity, assigned_to, status, sla_status, ageing
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [c.complaintNo, c.complaintDate, c.customerName, c.complaintType, c.severity, c.assignedTo, c.status, c.slaStatus, c.ageing]
-        );
-    }
-    console.log('Seeded database complaints.');
+    console.log('Skipped seeding mock database complaints (empty state setup).');
 
     // Seed Permissions
     const seededPerms = [

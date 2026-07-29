@@ -1472,6 +1472,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
   const [complaints, setComplaints] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [selectedComplaint, setSelectedComplaint] = React.useState(null);
+  const [salesConfirm, setSalesConfirm] = React.useState({ show: false, status: 'Open' });
 
   const fetchComplaints = React.useCallback(() => {
     const token = localStorage.getItem('vrm_token');
@@ -1537,8 +1538,14 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
     }));
   }, [complaints, user]);
 
-  const handleSalesSubmit = async (e, customStatus = 'Open') => {
+  const handleSalesSubmit = (e, customStatus = 'Open') => {
     if (e) e.preventDefault();
+    setSalesConfirm({ show: true, status: customStatus });
+  };
+
+  const executeSalesSubmit = async () => {
+    const customStatus = salesConfirm.status;
+    setSalesConfirm({ show: false, status: 'Open' });
     const token = localStorage.getItem('vrm_token');
 
     // Ensure we have a ticket number generated
@@ -1866,7 +1873,6 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
                     >
                       <option value="Jawahir">Jawahir (Production Head)</option>
-                      <option value="Purusothaman">Purusothaman (Dipping/Logistics)</option>
                     </select>
                   </div>
                 </div>
@@ -1914,11 +1920,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       value={salesFormData.complaintType} 
                       onChange={e => {
                         const val = e.target.value;
-                        let assign = 'Jawahir';
-                        if (['Quantity Issue'].includes(val)) {
-                          assign = 'Purusothaman';
-                        }
-                        setSalesFormData(p => ({ ...p, complaintType: val, assignedTo: assign }));
+                        setSalesFormData(p => ({ ...p, complaintType: val, assignedTo: 'Jawahir' }));
                       }} 
                       required 
                       style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
@@ -1976,6 +1978,71 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+        {salesConfirm.show && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(17, 24, 39, 0.7)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999
+          }}>
+            <div className="card" style={{
+              width: '90%',
+              maxWidth: '450px',
+              padding: '1.75rem',
+              textAlign: 'center',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              background: '#ffffff',
+              borderRadius: '12px'
+            }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: salesConfirm.status === 'Draft' ? '#eff6ff' : '#fff7ed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1rem',
+                color: salesConfirm.status === 'Draft' ? '#2563eb' : '#ea580c'
+              }}>
+                <ClipboardList size={24} />
+              </div>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.5rem' }}>
+                {salesConfirm.status === 'Draft' ? 'Save as Draft?' : 'Submit Complaint?'}
+              </h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-sub)', marginBottom: '1.5rem', lineHeight: '1.4' }}>
+                {salesConfirm.status === 'Draft' 
+                  ? 'Are you sure you want to save this complaint as a draft? You can modify it later.'
+                  : `Are you sure you want to submit and assign this complaint? This will immediately notify the assignee.`}
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <button 
+                  type="button" 
+                  onClick={() => setSalesConfirm({ show: false, status: 'Open' })}
+                  className="btn btn-ghost" 
+                  style={{ flex: 1, padding: '10px', fontSize: '0.85rem', fontWeight: 700 }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="button" 
+                  onClick={executeSalesSubmit}
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '10px', fontSize: '0.85rem', fontWeight: 700 }}
+                >
+                  {salesConfirm.status === 'Draft' ? 'Yes, Save Draft' : 'Yes, Submit'}
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -2073,32 +2140,137 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   const isOverdue = c.slaStatus === 'Overdue';
                   return (
                     <div 
-                      key={c.complaintNo} 
-                      className="card hover-card" 
+                      key={c.complaintNo}
                       onClick={() => setSelectedComplaint(c)}
-                      style={{ 
-                        cursor: 'pointer', 
-                        padding: '1.25rem', 
-                        border: isOverdue ? '1.5px solid var(--red)' : '1px solid var(--border)',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-                        transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+                      style={{
+                        background: 'var(--bg-card)',
+                        borderRadius: '24px',
+                        border: '2px solid transparent',
+                        padding: '1.75rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem',
+                        position: 'relative',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+                        e.currentTarget.style.borderColor = '#ea580c';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)';
+                        e.currentTarget.style.borderColor = 'transparent';
                       }}
                     >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                        <span className="cell-mono" style={{ fontWeight: 900, fontSize: '0.8rem', color: '#1d4ed8' }}>{c.complaintNo}</span>
-                        <span className={`badge ${['Showstopper', 'Blocker', 'Critical'].includes(c.severity) ? 'badge-critical' : 'badge-attention'}`} style={{ fontSize: '0.62rem' }}>
-                          {c.severity}
+                      {/* Pills Row (like ice grey, 3.2s, Manual) */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        <span style={{
+                          background: 'var(--bg-app)',
+                          color: 'var(--text-h)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <ClipboardList size={12} /> {c.complaintType}
+                        </span>
+                        <span style={{
+                          background: c.severity === 'Critical' || c.severity === 'High' ? '#fee2e2' : 'var(--bg-app)',
+                          color: c.severity === 'Critical' || c.severity === 'High' ? '#dc2626' : 'var(--text-muted)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <ShieldAlert size={12} /> {c.severity}
+                        </span>
+                        <span style={{
+                          background: 'var(--bg-app)',
+                          color: 'var(--text-muted)',
+                          padding: '4px 10px',
+                          borderRadius: '99px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          border: '1px solid var(--border)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <Clock size={12} /> {c.ageing} Days
                         </span>
                       </div>
-                      <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-h)', marginBottom: '0.25rem' }}>{c.customerName}</h3>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-                        Type: <span style={{ fontWeight: 700, color: 'var(--text-body)' }}>{c.complaintType}</span>
+
+                      {/* Title & Subtitle block (like Porsche 911 / GT3 RS) */}
+                      <div>
+                        <h2 style={{
+                          fontSize: '1.25rem',
+                          fontWeight: 900,
+                          color: 'var(--text-h)',
+                          margin: 0,
+                          lineHeight: '1.2',
+                          letterSpacing: '-0.02em'
+                        }}>
+                          {c.customerName}
+                        </h2>
+                        <h3 style={{
+                          fontSize: '1.1rem',
+                          fontWeight: 800,
+                          color: 'var(--text-muted)',
+                          margin: '2px 0 0 0',
+                          textTransform: 'uppercase',
+                          opacity: 0.6
+                        }}>
+                          {c.complaintNo}
+                        </h3>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '0.75rem', marginTop: '0.75rem' }}>
-                        <span style={{ fontSize: '0.72rem', fontWeight: 800, color: isOverdue ? 'var(--red)' : 'var(--green)' }}>
-                          {isOverdue ? 'Overdue!' : 'On Track'}
+
+                      {/* Description Paragraph */}
+                      <p style={{
+                        fontSize: '0.8rem',
+                        color: 'var(--text-body)',
+                        lineHeight: '1.5',
+                        margin: 0,
+                        flexGrow: 1
+                      }}>
+                        {c.description}
+                      </p>
+
+                      {/* Bottom Metadata Info */}
+                      <div style={{
+                        borderTop: '1px solid var(--border)',
+                        paddingTop: '0.75rem',
+                        marginTop: '0.25rem',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '0.7rem',
+                        color: 'var(--text-muted)',
+                        fontWeight: 700
+                      }}>
+                        <span>Date: <strong style={{ color: 'var(--text-h)' }}>{c.complaintDate}</strong></span>
+                        <span style={{
+                          background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                          color: '#ffffff',
+                          padding: '2px 8px',
+                          borderRadius: '6px',
+                          fontWeight: 900,
+                          fontSize: '0.6rem',
+                          textTransform: 'uppercase'
+                        }}>
+                          {isOverdue ? 'Overdue' : c.status}
                         </span>
-                        <span className="badge badge-navy" style={{ fontSize: '0.65rem' }}>{c.status}</span>
                       </div>
                     </div>
                   );
@@ -2227,7 +2399,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
   };
   const maxTypeCount = Math.max(...Object.values(typeCounts), 1);
 
-  const assigneesList = ['Purusothaman', 'Jawahir'];
+  const assigneesList = ['Jawahir'];
   const assigneeWorkloads = assigneesList.map(name => {
     const active = complaints.filter(c => c.assignedTo && c.assignedTo.toLowerCase() === name.toLowerCase() && c.status !== 'Resolved' && c.status !== 'Closed').length;
     const overdue = complaints.filter(c => c.assignedTo && c.assignedTo.toLowerCase() === name.toLowerCase() && c.slaStatus === 'Overdue').length;
@@ -2250,26 +2422,23 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
           {/* KPI CARDS */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
             {[
-              { key: 'total', title: 'Total Raised', icon: ClipboardList, color: '#1d4ed8', val: totalCount, unit: 'issues', label: 'All logged issues' },
-              { key: 'active', title: 'Open / Active', icon: Activity, color: '#ea580c', val: activeCount, unit: 'active', label: 'Under investigation' },
-              { key: 'overdue', title: 'Overdue SLA', icon: Clock, color: '#dc2626', val: overdueCount, unit: 'overdue', label: 'Missed SLA target' },
-              { key: 'closed', title: 'Closed / Resolved', icon: CheckCircle, color: '#16a34a', val: closedCount, unit: 'resolved', label: 'Resolved backlog' },
-              { key: 'critical', title: 'Critical +', icon: ShieldAlert, color: '#7c3aed', val: criticalCount, unit: 'urgent', label: 'High priority cases' },
-              { key: 'closure', title: 'Closure Rate', icon: TrendingUp, color: '#0d9488', val: closureRate, unit: '%', label: 'Resolved ratio MTD' }
+              { key: 'total', title: 'Total Raised', icon: ClipboardList, theme: 'grey-theme', val: totalCount, label: 'All logged issues' },
+              { key: 'active', title: 'Open / Active', icon: Activity, theme: 'orange-theme', val: activeCount, label: 'Under investigation' },
+              { key: 'overdue', title: 'Overdue SLA', icon: Clock, theme: 'grey-theme', val: overdueCount, label: 'Missed SLA target' },
+              { key: 'closed', title: 'Closed / Resolved', icon: CheckCircle, theme: 'grey-theme', val: closedCount, label: 'Resolved backlog' },
+              { key: 'critical', title: 'Critical +', icon: ShieldAlert, theme: 'grey-theme', val: criticalCount, label: 'High priority cases' },
+              { key: 'closure', title: 'Closure Rate', icon: TrendingUp, theme: 'grey-theme', val: `${closureRate}%`, label: 'Resolved ratio MTD' }
             ].map(k => {
               const Icon = k.icon;
               return (
-                <div key={k.key} className="card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', height: '140px', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-h)' }}>{k.title}</span>
-                    <Icon size={18} style={{ color: k.color }} />
+                <div key={k.key} className={`kpi-card-fx ${k.theme}`}>
+                  <div className="kpi-card-fx-top">
+                    <span className="kpi-card-fx-title">{k.title}</span>
+                    <span className="kpi-card-fx-icon"><Icon size={18} /></span>
                   </div>
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                      <span style={{ fontFamily: 'Goga', fontSize: '2rem', fontWeight: 900, color: 'var(--text-h)' }}>{k.val}</span>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>{k.unit}</span>
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>{k.label}</div>
+                    <div className="kpi-card-fx-val">{k.val}</div>
+                    <div className="kpi-trend-pill" style={{ display: 'inline-block', marginTop: '6px' }}>{k.label}</div>
                   </div>
                 </div>
               );
@@ -2376,59 +2545,256 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
           <div style={{ background: 'var(--navy)', color: '#ffffff', padding: '1rem 1.25rem', fontSize: '0.95rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <LayoutDashboard size={18} /> Customer Complaints Register (Read-only Overview)
           </div>
-          <div className="card-body-flush" style={{ overflowX: 'auto' }}>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Complaint No</th>
-                  <th>Customer Name</th>
-                  <th>Complaint Type</th>
-                  <th>Severity</th>
-                  <th>Assigned To</th>
-                  <th>Status</th>
-                  <th>Ageing</th>
-                </tr>
-              </thead>
-              <tbody>
-                {complaints.length === 0 ? (
-                  <tr>
-                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                      No complaints logged.
-                    </td>
-                  </tr>
-                ) : (
-                  complaints.map(c => {
-                    const isOverdue = c.slaStatus === 'Overdue';
-                    return (
-                      <tr 
-                        key={c.complaintNo} 
-                        style={{ 
-                          background: isOverdue ? 'rgba(239, 68, 68, 0.05)' : 'inherit',
-                          color: isOverdue ? '#dc2626' : 'inherit'
-                        }}
-                      >
-                        <td className="cell-mono" style={{ fontWeight: 800 }}>{c.complaintNo}</td>
-                        <td style={{ fontWeight: 700 }}>{c.customerName}</td>
-                        <td>{c.complaintType}</td>
-                        <td>
-                          <span className={`badge ${isOverdue || ['Showstopper', 'Blocker', 'Critical'].includes(c.severity) ? 'badge-critical' : 'badge-attention'}`} style={{ fontSize: '0.7rem' }}>
-                            {c.severity}
-                          </span>
-                        </td>
-                        <td>{c.assignedTo}</td>
-                        <td style={{ fontWeight: 700 }}>
-                          {isOverdue ? `${c.status} (OVERDUE)` : c.status}
-                        </td>
-                        <td style={{ fontWeight: 800 }}>{c.ageing} Days</td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', padding: '1.5rem' }}>
+            {complaints.length === 0 ? (
+              <div className="card" style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                No complaints logged.
+              </div>
+            ) : (
+              complaints.map(c => {
+                const isOverdue = c.slaStatus === 'Overdue';
+                return (
+                  <div 
+                    key={c.complaintNo}
+                    style={{
+                      background: 'var(--bg-card)',
+                      borderRadius: '24px',
+                      border: '2px solid transparent',
+                      padding: '1.75rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '1rem',
+                      position: 'relative',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+                      e.currentTarget.style.borderColor = '#ea580c';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)';
+                      e.currentTarget.style.borderColor = 'transparent';
+                    }}
+                  >
+                    {/* Pills Row (like ice grey, 3.2s, Manual) */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{
+                        background: 'var(--bg-app)',
+                        color: 'var(--text-h)',
+                        padding: '4px 10px',
+                        borderRadius: '99px',
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        border: '1px solid var(--border)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        <ClipboardList size={12} /> {c.complaintType}
+                      </span>
+                      <span style={{
+                        background: c.severity === 'Critical' || c.severity === 'High' ? '#fee2e2' : 'var(--bg-app)',
+                        color: c.severity === 'Critical' || c.severity === 'High' ? '#dc2626' : 'var(--text-muted)',
+                        padding: '4px 10px',
+                        borderRadius: '99px',
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        border: '1px solid var(--border)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        <ShieldAlert size={12} /> {c.severity}
+                      </span>
+                      <span style={{
+                        background: 'var(--bg-app)',
+                        color: 'var(--text-muted)',
+                        padding: '4px 10px',
+                        borderRadius: '99px',
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        border: '1px solid var(--border)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        <Clock size={12} /> {c.ageing} Days
+                      </span>
+                    </div>
+
+                    {/* Title & Subtitle block (like Porsche 911 / GT3 RS) */}
+                    <div>
+                      <h2 style={{
+                        fontSize: '1.25rem',
+                        fontWeight: 900,
+                        color: 'var(--text-h)',
+                        margin: 0,
+                        lineHeight: '1.2',
+                        letterSpacing: '-0.02em'
+                      }}>
+                        {c.customerName}
+                      </h2>
+                      <h3 style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 800,
+                        color: 'var(--text-muted)',
+                        margin: '2px 0 0 0',
+                        textTransform: 'uppercase',
+                        opacity: 0.6
+                      }}>
+                        {c.complaintNo}
+                      </h3>
+                    </div>
+
+                    {/* Description Paragraph */}
+                    <p style={{
+                      fontSize: '0.8rem',
+                      color: 'var(--text-body)',
+                      lineHeight: '1.5',
+                      margin: 0,
+                      flexGrow: 1
+                    }}>
+                      {c.description}
+                    </p>
+
+                    {/* Bottom Metadata Info */}
+                    <div style={{
+                      borderTop: '1px solid var(--border)',
+                      paddingTop: '0.75rem',
+                      marginTop: '0.25rem',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: '0.7rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: 700
+                    }}>
+                      <span>Assigned: <strong style={{ color: 'var(--text-h)' }}>{c.assignedTo}</strong></span>
+                      <span style={{
+                        background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                        color: '#ffffff',
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        fontWeight: 900,
+                        fontSize: '0.6rem',
+                        textTransform: 'uppercase'
+                      }}>
+                        {isOverdue ? 'Overdue' : c.status}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
-      )}
+      )
+    }
+
+      {selectedComplaint && (() => {
+        const c = selectedComplaint;
+        const isResolved = c.status === 'Resolved' || c.status === 'Closed';
+        
+        // Calculate days taken if resolved
+        let daysTakenText = 'Under progress';
+        if (isResolved) {
+          daysTakenText = `${c.ageing || 0} Days to Resolve`;
+        }
+
+        return (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            backdropFilter: 'blur(3px)'
+          }}>
+            <div className="card" style={{ width: '550px', padding: 0, overflow: 'hidden', borderRadius: '16px', animation: 'fadeIn 0.2s ease' }}>
+              <div style={{ background: 'var(--navy)', color: '#fff', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: 800 }}>Complaint Details: {c.complaintNo}</span>
+                <button onClick={() => setSelectedComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 900 }}>×</button>
+              </div>
+              <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised Date</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Raised By</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Customer Name</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Assigned To</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-h)', marginTop: '2px' }}>{c.assignedTo || 'Unassigned'}</div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>Problem Description</div>
+                  <div style={{ fontSize: '0.825rem', color: 'var(--text-body)', background: 'var(--bg-app)', padding: '10px 14px', borderRadius: '8px', marginTop: '4px', border: '1px solid var(--border)', lineHeight: '1.4' }}>
+                    {c.description}
+                  </div>
+                </div>
+
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.25rem' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Resolution & Closure Status</div>
+                  
+                  {isResolved ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 700, color: '#16a34a' }}>
+                        <span>Status: Completed / Resolved</span>
+                        <span>{daysTakenText}</span>
+                      </div>
+                      {c.resolvedDate && (
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                          <strong>Resolved Date:</strong> {c.resolvedDate}
+                        </div>
+                      )}
+                      {c.rootCauseDetails && (
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                          <strong>Root Cause:</strong> {c.rootCauseDetails}
+                        </div>
+                      )}
+                      {c.correctiveAction && (
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-body)' }}>
+                          <strong>Corrective Action:</strong> {c.correctiveAction}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff7ed', border: '1px solid #fed7aa', padding: '10px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, color: '#ea580c' }}>
+                      <span>Status: {c.status} (In Progress)</span>
+                      <span>Ageing: {c.ageing || 0} Days Active</span>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                  <button onClick={() => setSelectedComplaint(null)} className="btn btn-ghost" style={{ padding: '8px 24px', fontWeight: 800 }}>Close Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -5087,7 +5453,7 @@ export default function App() {
               return (
                 <>
                   <button className={`nav-item ${activeTab === 'production_dept' ? 'active' : ''}`} onClick={() => setActiveTab('production_dept')} title="Production Dashboard" data-tooltip="Production Dashboard"><span className="nav-item-icon"><LayoutDashboard size={22} /></span></button>
-                  <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => setActiveTab('complaint_entry')} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
+                  <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => { setActiveTab('complaint_entry'); setComplaintSubTab('overview'); }} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
                   <button className={`nav-item ${activeTab === 'inventory' ? 'active' : ''}`} onClick={() => setActiveTab('inventory')} title="Inventory & Warehouse" data-tooltip="Inventory & Warehouse"><span className="nav-item-icon"><Package size={22} /></span></button>
                   <button className={`nav-item ${activeTab === 'attendance' ? 'active' : ''}`} onClick={() => setActiveTab('attendance')} title="Attendance Log" data-tooltip="Attendance Log"><span className="nav-item-icon"><Calendar size={22} /></span></button>
                   <button className={`nav-item ${activeTab === 'employees' ? 'active' : ''}`} onClick={() => setActiveTab('employees')} title="Employees directory" data-tooltip="Employees Directory"><span className="nav-item-icon"><Users size={22} /></span></button>
@@ -5142,7 +5508,7 @@ export default function App() {
               return (
                 <>
                   <button className={`nav-item ${activeTab === 'employee_dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('employee_dashboard')} title="My Dashboard" data-tooltip="My Dashboard"><span className="nav-item-icon"><LayoutDashboard size={22} /></span></button>
-                  <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => setActiveTab('complaint_entry')} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
+                  <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => { setActiveTab('complaint_entry'); setComplaintSubTab('overview'); }} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
                 </>
               );
             }
@@ -5150,7 +5516,7 @@ export default function App() {
             return (
               <>
                 <button className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')} title="Dashboard" data-tooltip="Dashboard"><span className="nav-item-icon"><LayoutDashboard size={22} /></span>{criticalAlerts > 0 && <span className="nav-item-badge">{criticalAlerts}</span>}</button>
-                <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => setActiveTab('complaint_entry')} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
+                <button className={`nav-item ${activeTab === 'complaint_entry' ? 'active' : ''}`} onClick={() => { setActiveTab('complaint_entry'); setComplaintSubTab('overview'); }} title="Complaint Entry" data-tooltip="Complaint Entry"><span className="nav-item-icon"><ClipboardList size={22} /></span></button>
                 <button className={`nav-item ${['production_dept', 'procurement', 'accounts', 'sales', 'design', 'digital_marketing'].includes(activeTab) ? 'active' : ''}`} onClick={() => setActiveTab('production_dept')} title="Departments" data-tooltip="Departments"><span className="nav-item-icon"><Building2 size={22} /></span></button>
                 <button className={`nav-item ${activeTab === 'inventory' ? 'active' : ''}`} onClick={() => setActiveTab('inventory')} title="Inventory & Warehouse" data-tooltip="Inventory & Warehouse"><span className="nav-item-icon"><Package size={22} /></span></button>
                 <button className={`nav-item ${activeTab === 'attendance' ? 'active' : ''}`} onClick={() => setActiveTab('attendance')} title="Attendance Log" data-tooltip="Attendance Log"><span className="nav-item-icon"><Calendar size={22} /></span></button>
