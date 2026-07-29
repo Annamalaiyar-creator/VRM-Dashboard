@@ -1482,7 +1482,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
     const token = localStorage.getItem('vrm_token');
     if (!token) return;
     setLoading(true);
-    fetch(`${API}/complaints`, {
+    fetch(`${API}/complaints?t=${Date.now()}`, {
+      cache: 'no-store',
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => res.ok ? res.json() : [])
