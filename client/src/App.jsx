@@ -43,7 +43,9 @@ import {
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
-const API = 'https://vrm-dashboard-72t8.onrender.com/api';
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5001/api'
+  : 'https://vrm-dashboard-72t8.onrender.com/api';
 const CEO_EMAIL    = 'executive@workhub.com';
 const CEO_PASSWORD = 'password';
 
@@ -1477,6 +1479,14 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
   const [salesConfirm, setSalesConfirm] = React.useState({ show: false, status: 'Open' });
   const [salesEditComplaint, setSalesEditComplaint] = React.useState(null);
   const [prodEditComplaint, setProdEditComplaint] = React.useState(null);
+  const [toast, setToast] = React.useState(null);
+
+  const triggerToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  };
 
   const fetchComplaints = React.useCallback(() => {
     const token = localStorage.getItem('vrm_token');
@@ -1611,7 +1621,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         body: JSON.stringify(newComplaint)
       });
       if (!res.ok) throw new Error('Failed to submit complaint');
-      alert(`Complaint ${finalNo} successfully raised and assigned to ${targetAssignedTo}!`);
+      triggerToast(`Complaint ${finalNo} successfully raised and assigned to ${targetAssignedTo}!`, 'success');
       setSalesFormData({
         customerName: '',
         invoiceNo: '',
@@ -1622,7 +1632,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
       });
       fetchComplaints();
     } catch (err) {
-      alert(err.message);
+      triggerToast(err.message, 'error');
     }
   };
 
@@ -1639,11 +1649,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         body: JSON.stringify(salesEditComplaint)
       });
       if (!res.ok) throw new Error('Failed to update complaint');
-      alert(`Complaint ${salesEditComplaint.complaintNo} updated successfully!`);
+      triggerToast(`Complaint ${salesEditComplaint.complaintNo} updated successfully!`, 'success');
       setSalesEditComplaint(null);
       fetchComplaints();
     } catch (err) {
-      alert(err.message);
+      triggerToast(err.message, 'error');
     }
   };
 
@@ -1705,7 +1715,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
     const changes = editStates[cNo] || {};
 
     if (Object.keys(changes).length === 0) {
-      alert('No changes to save.');
+      triggerToast('No changes to save.', 'error');
       return;
     }
 
@@ -1724,7 +1734,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error('Failed to save complaint changes');
-      alert(`Complaint ${cNo} updated successfully!`);
+      triggerToast(`Complaint ${cNo} updated successfully!`, 'success');
       setEditStates(prev => {
         const next = { ...prev };
         delete next[cNo];
@@ -1732,7 +1742,7 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
       });
       fetchComplaints();
     } catch (err) {
-      alert(err.message);
+      triggerToast(err.message, 'error');
     }
   };
 
@@ -2465,6 +2475,28 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             </div>
           </div>
         )}
+        {toast && (
+          <div style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            background: toast.type === 'success' ? '#16a34a' : '#dc2626',
+            color: '#ffffff',
+            padding: '12px 20px',
+            borderRadius: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            zIndex: 99999,
+            fontSize: '0.825rem',
+            fontWeight: 600,
+            fontFamily: 'Montserrat',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            animation: 'slideInRight 0.3s ease'
+          }}>
+            {toast.type === 'success' ? '✅' : '❌'} {toast.message}
+          </div>
+        )}
       </div>
     );
   }
@@ -2932,6 +2964,28 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             })()}
           </>
         )}
+        {toast && (
+          <div style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            background: toast.type === 'success' ? '#16a34a' : '#dc2626',
+            color: '#ffffff',
+            padding: '12px 20px',
+            borderRadius: '12px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            zIndex: 99999,
+            fontSize: '0.825rem',
+            fontWeight: 600,
+            fontFamily: 'Montserrat',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            animation: 'slideInRight 0.3s ease'
+          }}>
+            {toast.type === 'success' ? '✅' : '❌'} {toast.message}
+          </div>
+        )}
       </div>
     );
   }
@@ -3375,6 +3429,28 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
           </div>
         );
       })()}
+      {toast && (
+        <div style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          background: toast.type === 'success' ? '#16a34a' : '#dc2626',
+          color: '#ffffff',
+          padding: '12px 20px',
+          borderRadius: '12px',
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          zIndex: 99999,
+          fontSize: '0.825rem',
+          fontWeight: 600,
+          fontFamily: 'Montserrat',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          animation: 'slideInRight 0.3s ease'
+        }}>
+          {toast.type === 'success' ? '✅' : '❌'} {toast.message}
+        </div>
+      )}
     </div>
   );
 }

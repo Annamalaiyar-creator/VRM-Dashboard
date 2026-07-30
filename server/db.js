@@ -86,18 +86,6 @@ async function initDb() {
     const db = await getDb();
     
     console.log('Initializing database and applying schema migrations...');
-    
-    // Drop existing tables to refresh schema (CASCADE is used for PostgreSQL foreign key constraints)
-    await db.exec(`DROP TABLE IF EXISTS user_roles CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS role_permissions CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS roles CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS permissions CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS attendance CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS leaves CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS tasks CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS users CASCADE`);
-    await db.exec(`DROP TABLE IF EXISTS complaints CASCADE`);
-
     // Create Users Table
     await db.exec(`
         CREATE TABLE IF NOT EXISTS users (
@@ -222,8 +210,12 @@ async function initDb() {
         )
     `);
 
-    // Seed default users
-    const hashedPassword = await bcrypt.hash('password', 10);
+    // Check if database is already seeded
+    const seeded = await db.get("SELECT COUNT(*) as count FROM users");
+    if (parseInt(seeded?.count || 0) === 0) {
+        console.log('Seeding default database records...');
+        // Seed default users
+        const hashedPassword = await bcrypt.hash('password', 10);
     
     await db.run(
         `INSERT INTO users (name, email, password, role, department, annual_leave, sick_leave) VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -431,7 +423,10 @@ async function initDb() {
         await db.run(`INSERT OR IGNORE INTO user_roles (user_id, role_id) VALUES (?, ?)`, [uEmp.id, empRole.id]);
     }
 
-    console.log('Production Database Initialization Complete.');
+        console.log('Production Database Initialization Complete.');
+    } else {
+        console.log('Database already initialized. Skipping default seeding.');
+    }
 }
 
 module.exports = { getDb, initDb };
