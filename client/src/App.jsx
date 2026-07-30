@@ -1712,7 +1712,11 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
 
   const handleProdSave = async (cNo, original) => {
     const token = localStorage.getItem('vrm_token');
-    const changes = editStates[cNo] || {};
+    const changes = { ...(editStates[cNo] || {}) };
+
+    if (original.status === 'Open' && !changes.status) {
+      changes.status = 'In Progress';
+    }
 
     if (Object.keys(changes).length === 0) {
       triggerToast('No changes to save.', 'error');
@@ -2603,7 +2607,13 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   return (
                     <div 
                       key={c.complaintNo}
-                      onClick={() => setSelectedComplaint(c)}
+                      onClick={() => {
+                        if (['Resolved', 'Closed'].includes(c.status)) {
+                          setSelectedComplaint(c);
+                        } else {
+                          setProdEditComplaint(c);
+                        }
+                      }}
                       style={{
                         background: 'var(--bg-card)',
                         borderRadius: '24px',
@@ -2723,17 +2733,29 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       }}>
                         <span>Date: <strong style={{ color: 'var(--text-h)' }}>{c.complaintDate}</strong></span>
                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedComplaint(c);
-                            }}
-                            className="btn btn-ghost"
-                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
-                          >
-                            View
-                          </button>
-                          {!['Resolved', 'Closed'].includes(c.status) && (
+                          {['Resolved', 'Closed'].includes(c.status) ? (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedComplaint(c);
+                              }}
+                              className="btn btn-ghost"
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                            >
+                              View
+                            </button>
+                          ) : c.status === 'Open' ? (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setProdEditComplaint(c);
+                              }}
+                              className="btn btn-primary"
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', background: '#ea580c', borderColor: '#ea580c' }}
+                            >
+                              Update
+                            </button>
+                          ) : (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -2745,18 +2767,20 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                               Edit
                             </button>
                           )}
-                          <span style={{
-                            background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
-                            color: '#ffffff',
-                            padding: '2px 8px',
-                            borderRadius: '6px',
-                            fontWeight: 600,
-                            fontSize: '0.6rem',
-                            textTransform: 'uppercase',
-                            marginLeft: '4px'
-                          }}>
-                            {isOverdue ? 'Overdue' : c.status}
-                          </span>
+                          {c.status !== 'Open' && (
+                            <span style={{
+                              background: isOverdue ? '#dc2626' : c.status === 'Resolved' || c.status === 'Closed' ? '#16a34a' : '#ea580c',
+                              color: '#ffffff',
+                              padding: '2px 8px',
+                              borderRadius: '6px',
+                              fontWeight: 600,
+                              fontSize: '0.6rem',
+                              textTransform: 'uppercase',
+                              marginLeft: '4px'
+                            }}>
+                              {isOverdue ? 'Overdue' : c.status}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2769,10 +2793,10 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
             {prodEditComplaint && (() => {
               const c = prodEditComplaint;
               const localState = editStates[c.complaintNo] || {};
-              const currentStatus = localState.status !== undefined ? localState.status : c.status;
+              const currentStatus = localState.status !== undefined ? localState.status : (c.status === 'Open' ? 'In Progress' : c.status);
               const currentRootCause = localState.rootCauseDetails !== undefined ? localState.rootCauseDetails : c.rootCauseDetails;
               const currentCorrective = localState.correctiveAction !== undefined ? localState.correctiveAction : c.correctiveAction;
-              const hasChanges = Object.keys(localState).length > 0;
+              const isSaveDisabled = !currentRootCause?.trim() || !currentCorrective?.trim() || !currentStatus?.trim();
 
               return (
                 <div style={{
@@ -2794,9 +2818,26 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       <button onClick={() => setProdEditComplaint(null)} style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer', fontWeight: 600 }}>×</button>
                     </div>
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Customer</div>
-                        <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-h)' }}>{c.customerName}</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Company Name</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.customerName || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised Date</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.complaintDate || 'N/A'}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Raised By</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.raisedBy || 'Sales Person'}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Severity</div>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-h)', marginTop: '2px' }}>{c.severity || 'Medium'}</div>
+                        </div>
                       </div>
                       <div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Problem Description</div>
@@ -2812,7 +2853,6 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                           onChange={e => handleProdFieldChange(c.complaintNo, 'status', e.target.value)}
                           style={{ background: 'var(--bg-app)', color: 'var(--text-h)', border: '1px solid var(--border)' }}
                         >
-                          <option value="Open">Open</option>
                           <option value="In Progress">In Progress</option>
                           <option value="Waiting Internal">Waiting Internal</option>
                           <option value="Waiting Customer">Waiting Customer</option>
@@ -2850,8 +2890,8 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                             setProdEditComplaint(null);
                           }} 
                           className="btn btn-primary" 
-                          disabled={!hasChanges}
-                          style={{ padding: '8px 24px', fontWeight: 600, opacity: hasChanges ? 1 : 0.5 }}
+                          disabled={isSaveDisabled}
+                          style={{ padding: '8px 24px', fontWeight: 600, opacity: isSaveDisabled ? 0.5 : 1, cursor: isSaveDisabled ? 'not-allowed' : 'pointer' }}
                         >
                           Save & Apply
                         </button>
