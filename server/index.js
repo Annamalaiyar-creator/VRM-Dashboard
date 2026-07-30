@@ -294,6 +294,17 @@ app.post('/api/complaints', authenticateToken, async (req, res) => {
     const c = req.body;
     try {
         const db = await getDb();
+
+        const today = new Date();
+        const yy = String(today.getFullYear()).slice(-2);
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const todayPrefix = `CMP-${yy}${mm}${dd}-`;
+
+        const countRow = await db.get('SELECT COUNT(*) as count FROM complaints WHERE complaint_no LIKE ?', [`${todayPrefix}%`]);
+        const nextSeq = String(parseInt(countRow?.count || 0) + 1).padStart(3, '0');
+        const finalNo = `${todayPrefix}${nextSeq}`;
+
         await db.run(
             `INSERT INTO complaints (
                 complaint_no, complaint_date, raised_by, assigned_to, invoice_no, customer_name,
@@ -303,7 +314,7 @@ app.post('/api/complaints', authenticateToken, async (req, res) => {
                 resolved_date, closed_date, closure_category
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                c.complaintNo || null,
+                finalNo,
                 c.complaintDate || null,
                 c.raisedBy || null,
                 c.assignedTo || null,
@@ -329,7 +340,7 @@ app.post('/api/complaints', authenticateToken, async (req, res) => {
                 c.closureCategory || null
             ]
         );
-        res.status(201).json({ message: 'Complaint created successfully' });
+        res.status(201).json({ message: 'Complaint created successfully', complaintNo: finalNo });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

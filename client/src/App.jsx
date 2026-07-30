@@ -1621,7 +1621,9 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
         body: JSON.stringify(newComplaint)
       });
       if (!res.ok) throw new Error('Failed to submit complaint');
-      triggerToast(`Complaint ${finalNo} successfully raised and assigned to ${targetAssignedTo}!`, 'success');
+      const data = await res.json();
+      const actualNo = data.complaintNo || finalNo;
+      triggerToast(`Complaint ${actualNo} successfully raised and assigned to ${targetAssignedTo}!`, 'success');
       setSalesFormData({
         customerName: '',
         invoiceNo: '',
@@ -1871,6 +1873,13 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                   return (
                     <div 
                       key={c.complaintNo}
+                      onClick={() => {
+                        if (['Resolved', 'Closed'].includes(c.status)) {
+                          setSelectedComplaint(c);
+                        } else {
+                          setSalesEditComplaint(c);
+                        }
+                      }}
                       style={{
                         background: 'var(--bg-card)',
                         borderRadius: '24px',
@@ -1990,17 +1999,18 @@ function ComplaintEntryTab({ subTab, setSubTab, user }) {
                       }}>
                         <span>Assigned: <strong style={{ color: 'var(--text-h)' }}>{c.assignedTo}</strong></span>
                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedComplaint(c);
-                            }}
-                            className="btn btn-ghost"
-                            style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
-                          >
-                            View
-                          </button>
-                          {!['Resolved', 'Closed'].includes(c.status) && (
+                          {['Resolved', 'Closed'].includes(c.status) ? (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedComplaint(c);
+                              }}
+                              className="btn btn-ghost"
+                              style={{ padding: '2px 8px', fontSize: '0.65rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', height: '24px', border: '1px solid var(--border)' }}
+                            >
+                              View
+                            </button>
+                          ) : (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
